@@ -1,0 +1,32 @@
+package rs.raf.rafeisen.security
+
+import androidx.datastore.core.CorruptionException
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import timber.log.Timber
+import java.io.InputStream
+import java.io.OutputStream
+
+inline fun <reified T> InputStream.readDecrypted(
+    json: Json,
+    encryption: Encryption,
+): T {
+    val decryptedJson = encryption.decrypt(this)
+    return try {
+        json.decodeFromString(decryptedJson)
+    } catch (error: SerializationException) {
+        Timber.w(error)
+        throw CorruptionException("Unable to deserialize decrypted value.", error)
+    } catch (error: IllegalArgumentException) {
+        Timber.w(error)
+        throw CorruptionException("Unable to deserialize decrypted value.", error)
+    }
+}
+
+inline fun <reified T> OutputStream.writeEncrypted(
+    value: T,
+    json: Json,
+    encryption: Encryption,
+) {
+    encryption.encrypt(json.encodeToString(value), this)
+}
