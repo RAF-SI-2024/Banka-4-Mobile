@@ -11,8 +11,8 @@ import rs.raf.rafeisen.screen.home.HomeScreen
 import rs.raf.rafeisen.screen.home.HomeViewModel
 import rs.raf.rafeisen.screen.login.LoginScreen
 import rs.raf.rafeisen.screen.login.LoginViewModel
-import rs.raf.rafeisen.screen.totp.TotpScreen
-import rs.raf.rafeisen.screen.totp.TotpViewModel
+import rs.raf.rafeisen.screen.totp.AddTotpScreen
+import rs.raf.rafeisen.screen.totp.AddTotpViewModel
 
 @Composable
 fun AppNavigation() {
@@ -20,11 +20,11 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "totp",
+        startDestination = "home",
     ) {
         home(route = "home", navController = navController)
         login(route = "login", navController = navController)
-        totp(route = "totp", navController = navController)
+        addTotp(route = "totp", navController = navController)
     }
 }
 
@@ -51,10 +51,17 @@ private fun NavGraphBuilder.home(
     HomeScreen(viewModel = viewModel)
 }
 
-private fun NavGraphBuilder.totp(
+private fun NavGraphBuilder.addTotp(
     route: String,
     navController: NavController,
 ) = composable(route = route) {
-    val viewModel = hiltViewModel<TotpViewModel>()
-    TotpScreen(viewModel = viewModel, onBack = { navController.popBackStack() })
+    val viewModel = hiltViewModel<AddTotpViewModel>()
+
+    AddTotpScreen(
+        viewModel = viewModel,
+        onClose = {
+            navController.popBackStack()
+            navController.navigateUp()
+        },
+    )
 }
