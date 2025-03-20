@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +40,8 @@ import rs.raf.rafeisen.R
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, onNavigateToHome: () -> Unit) {
 
+    val uiState = viewModel.state.collectAsState()
+
     LaunchedEffect(viewModel) {
         launch {
             viewModel.effects.collect {
@@ -49,11 +52,15 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToHome: () -> Unit) {
         }
     }
 
-    LoginScreen(eventPublisher = viewModel::setEvent)
+    LoginScreen(
+        state = uiState.value,
+        eventPublisher = viewModel::setEvent,
+    )
 }
 
 @Composable
 private fun LoginScreen(
+    state: LoginContract.UiState,
     eventPublisher: (LoginContract.UiEvent) -> Unit,
 ) {
     var email by remember { mutableStateOf("") }
@@ -64,14 +71,17 @@ private fun LoginScreen(
             .navigationBarsPadding()
             .imePadding(),
         bottomBar = {
-            LoginScreenBottomBar(onLoginClick = {
-                eventPublisher(
-                    LoginContract.UiEvent.LoginRequest(
-                        email = email,
-                        password = password,
+            LoginScreenBottomBar(
+                disabled = state.isWorking,
+                onLoginClick = {
+                    eventPublisher(
+                        LoginContract.UiEvent.LoginRequest(
+                            email = email,
+                            password = password,
+                        )
                     )
-                )
-            })
+                },
+            )
         }
     ) { paddingValues ->
         Column(
@@ -100,9 +110,11 @@ private fun LoginScreen(
 
 @Composable
 private fun LoginScreenBottomBar(
+    disabled: Boolean,
     onLoginClick: () -> Unit,
 ) {
     Button(
+        enabled = !disabled,
         onClick = onLoginClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
         modifier = Modifier
