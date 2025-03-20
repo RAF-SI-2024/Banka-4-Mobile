@@ -8,13 +8,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.raf.rafeisen.model.TotpSecret
+import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.store.TotpSecretsStore
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class TotpViewModel @Inject constructor(
-    private val totpSecretsStore: TotpSecretsStore
+    private val totpSecretsStore: TotpSecretsStore,
+    private val activeAccountStore: ActiveAccountStore
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(TotpContract.TotpUiState())
@@ -47,9 +49,10 @@ class TotpViewModel @Inject constructor(
                     setState { copy(errorMessage = "Issuer and Secret must not be empty", isSubmitting = false) }
                     return@launch
                 }
+                val currentUserId = activeAccountStore.activeUserId()
                 val totpSecret = TotpSecret(
                     id = UUID.randomUUID().toString(),
-                    userId = "currentUserId", ///TODO(Aleksa) extract current logged user id
+                    userId = currentUserId,
                     issuer = currentState.issuer,
                     secret = currentState.secret
                 )
