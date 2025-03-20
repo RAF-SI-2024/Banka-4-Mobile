@@ -13,7 +13,6 @@ import retrofit2.Retrofit
 import rs.raf.rafeisen.api.auth.AuthApi
 import rs.raf.rafeisen.api.client.ClientApi
 import rs.raf.rafeisen.networking.api.AuthClientServiceInternalRequests
-import rs.raf.rafeisen.networking.api.ClientRoute
 import rs.raf.rafeisen.networking.utils.buildAuthenticatedOkHttpClient
 import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.store.CredentialsStore
@@ -84,13 +83,6 @@ object NetworkingModule {
                 appJson.asConverterFactory("application/json".toMediaType())
             )
             .build()
-
-    @Singleton
-    @Provides
-    fun provideClientRouteRetrofit(
-        retrofit: Retrofit
-    ): ClientRoute =
-        retrofit.create(ClientRoute::class.java)
 
     @Singleton
     @Provides
