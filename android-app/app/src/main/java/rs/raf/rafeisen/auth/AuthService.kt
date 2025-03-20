@@ -26,7 +26,6 @@ class AuthService
             password: String,
         ) = withContext(dispatchers.io()) {
             val response = authApi.login(body = LoginRequest(email = email, password = password))
-            // TODO(arsen): handle employees
             val clientMeResponse = authClientServiceInternalRequests.getClientMe("Bearer ${response.accessToken}")
             credentialsStore.addCredential(Credential(
                 id = clientMeResponse.id,
