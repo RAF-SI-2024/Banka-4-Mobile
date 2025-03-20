@@ -1,7 +1,9 @@
 package rs.raf.rafeisen.api.client.response
 
+import kotlinx.serialization.Serializable
 import rs.raf.rafeisen.model.Gender
 
+@Serializable
 data class ClientMeResponse(
     val id: String,
     val firstName: String,
