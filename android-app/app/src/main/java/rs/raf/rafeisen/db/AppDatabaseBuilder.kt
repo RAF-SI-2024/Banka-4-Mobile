@@ -14,7 +14,7 @@ class AppDatabaseBuilder
     ) {
         init {
             System.loadLibrary("sqlcipher")
-            context.deleteDatabase("primal.db")
+            context.deleteDatabase("rafeisen_v1.db")
         }
 
         fun build(): AppDatabase {
