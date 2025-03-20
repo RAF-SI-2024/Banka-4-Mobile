@@ -15,12 +15,12 @@ import rs.raf.rafeisen.screen.totp.AddTotpScreen
 import rs.raf.rafeisen.screen.totp.AddTotpViewModel
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(startDestination: String) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = startDestination,
     ) {
         home(route = "home", navController = navController)
         login(route = "login", navController = navController)
