@@ -5,5 +5,5 @@ import rs.raf.rafeisen.api.client.response.ClientMeResponse
 
 interface ClientApi {
     @GET("/client/me")
-    fun getMe(): ClientMeResponse
+    suspend fun getMe(): ClientMeResponse
 }
