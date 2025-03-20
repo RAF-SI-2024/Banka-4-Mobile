@@ -32,7 +32,10 @@ private fun NavGraphBuilder.login(
     route = route,
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
-    LoginScreen(viewModel = viewModel)
+    LoginScreen(
+        viewModel = viewModel,
+        onNavigateToHome = { navController.navigateToHome() },
+    )
 }
 
 private fun NavGraphBuilder.home(
