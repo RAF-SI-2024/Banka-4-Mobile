@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import rs.raf.rafeisen.drawer.DrawerScreenDestination
 import rs.raf.rafeisen.screen.home.HomeScreen
 import rs.raf.rafeisen.screen.home.HomeViewModel
 import rs.raf.rafeisen.screen.login.LoginScreen
@@ -18,11 +19,22 @@ import rs.raf.rafeisen.screen.totp.AddTotpViewModel
 fun AppNavigation(startDestination: String) {
     val navController = rememberNavController()
 
+    val drawerDestinationHandler: (DrawerScreenDestination) -> Unit = {
+        when (it) {
+            DrawerScreenDestination.Home -> navController.navigateToHome()
+            is DrawerScreenDestination.SignOut -> {}
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        home(route = "home", navController = navController)
+        home(
+            route = "home",
+            navController = navController,
+            onDrawerScreenDestination = drawerDestinationHandler,
+        )
         login(route = "login", navController = navController)
         addTotp(route = "totp", navController = navController)
     }
@@ -44,11 +56,15 @@ private fun NavGraphBuilder.login(
 private fun NavGraphBuilder.home(
     route: String,
     navController: NavController,
+    onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
 ) = composable(
     route = route,
 ) {
     val viewModel = hiltViewModel<HomeViewModel>()
-    HomeScreen(viewModel = viewModel)
+    HomeScreen(
+        viewModel = viewModel,
+        onDrawerScreenDestinationClick = onDrawerScreenDestination,
+    )
 }
 
 private fun NavGraphBuilder.addTotp(
