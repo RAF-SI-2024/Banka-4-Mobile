@@ -13,4 +13,17 @@ data class UserAccount(
     val phone: String,
     val address: String,
     // TODO: add privileges and dateOfBirth
-)
+) {
+    fun fullName() = "$firstName $lastName"
+    companion object {
+        val EMPTY = UserAccount(
+            id = "",
+            firstName = "",
+            lastName = "",
+            gender = Gender.Male,
+            email = "",
+            phone = "",
+            address = "",
+        )
+    }
+}
