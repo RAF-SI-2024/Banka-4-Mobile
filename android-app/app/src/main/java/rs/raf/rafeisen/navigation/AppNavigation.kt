@@ -64,6 +64,7 @@ private fun NavGraphBuilder.home(
     HomeScreen(
         viewModel = viewModel,
         onDrawerScreenDestinationClick = onDrawerScreenDestination,
+        onAddTotpClick = { navController.navigateToAddTotp() },
     )
 }
 
