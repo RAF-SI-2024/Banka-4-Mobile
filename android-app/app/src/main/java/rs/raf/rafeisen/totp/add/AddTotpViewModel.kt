@@ -1,5 +1,6 @@
 package rs.raf.rafeisen.totp.add
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,16 +11,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import rs.raf.rafeisen.navigation.issuerOrNull
+import rs.raf.rafeisen.navigation.secretOrNull
+import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.totp.add.AddTotpContract.SideEffect
 import rs.raf.rafeisen.totp.add.AddTotpContract.UiEvent
 import rs.raf.rafeisen.totp.add.AddTotpContract.UiState
-import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.totp.model.Totp
 import rs.raf.rafeisen.totp.repository.TotpRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class AddTotpViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val totpRepository: TotpRepository,
     private val activeAccountStore: ActiveAccountStore,
 ) : ViewModel() {
@@ -36,8 +40,19 @@ class AddTotpViewModel @Inject constructor(
     private fun setEffect(effect: SideEffect) = viewModelScope.launch { _effects.send(effect) }
 
     init {
+        tryAddTotp()
         observeEvents()
     }
+
+    private fun tryAddTotp() =
+        viewModelScope.launch {
+            val secret = savedStateHandle.secretOrNull
+            val issuer = savedStateHandle.issuerOrNull
+
+            if (secret != null && issuer != null) {
+                addTotpCode(issuer = issuer, secret = secret)
+            }
+        }
 
     private fun observeEvents() =
         viewModelScope.launch {
