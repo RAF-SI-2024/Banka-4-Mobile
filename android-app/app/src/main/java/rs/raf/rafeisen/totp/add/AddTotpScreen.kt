@@ -39,7 +39,7 @@ fun AddTotpScreen(
 ) {
     val uiState = viewModel.state.collectAsState()
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(viewModel, viewModel.effects) {
         launch {
             viewModel.effects.collect {
                 when (it) {
