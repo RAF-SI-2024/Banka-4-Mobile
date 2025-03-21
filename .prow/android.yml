@@ -1,0 +1,30 @@
+presubmits:
+  - name: pull-banka-4-mobile-android-checks
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+        - image: harbor.k8s.elab.rs/banka-4/base-android:latest
+          name: android-ci
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -ue
+              cd android-app
+
+              # No usage of gradlew (instead use the incorrect gradle version
+              # present on host) because the CI runner is on an awful network.
+              failed=false
+              run() {
+                if "$@"; then
+                    :
+                else
+                    echo E''R''R''O''R: "'$*'" failed
+                    failed=true
+                fi
+              }
+              run gradle assemble
+              run gradle detekt
+              run gradle lint
+              ! "${failed}"
