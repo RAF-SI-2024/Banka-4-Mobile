@@ -68,10 +68,10 @@ private fun LoginScreen(
 
     Scaffold(
         modifier = Modifier
-            .navigationBarsPadding()
             .imePadding(),
         bottomBar = {
             LoginScreenBottomBar(
+                modifier = Modifier.navigationBarsPadding(),
                 disabled = state.isWorking,
                 onLoginClick = {
                     eventPublisher(
@@ -110,6 +110,7 @@ private fun LoginScreen(
 
 @Composable
 private fun LoginScreenBottomBar(
+    modifier: Modifier = Modifier,
     disabled: Boolean,
     onLoginClick: () -> Unit,
 ) {
@@ -117,7 +118,7 @@ private fun LoginScreenBottomBar(
         enabled = !disabled,
         onClick = onLoginClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
-        modifier = Modifier
+        modifier = modifier
             .padding(16.dp)
             .fillMaxWidth(),
     ) {
