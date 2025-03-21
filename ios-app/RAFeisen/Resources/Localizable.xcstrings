@@ -1,0 +1,212 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%d digits" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%llds" : {
+
+    },
+    "2FA Enabled" : {
+
+    },
+    "Add your first TOTP code using the + button" : {
+
+    },
+    "Authenticator Codes" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Either your email or password are incorrect. Please try again." : {
+      "comment" : "Error: Authentication Service",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Either your email or password are incorrect. Please try again."
+          }
+        }
+      }
+    },
+    "gender.female" : {
+      "comment" : "Gender enum representable value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Female"
+          }
+        }
+      }
+    },
+    "gender.male" : {
+      "comment" : "Gender enum representable value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Male"
+          }
+        }
+      }
+    },
+    "Hello, World!" : {
+
+    },
+    "login" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login"
+          }
+        }
+      }
+    },
+    "login.email.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "login.password.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        }
+      }
+    },
+    "navigation.profileview.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "No" : {
+
+    },
+    "No TOTP Codes" : {
+
+    },
+    "profile.logout" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logout"
+          }
+        }
+      }
+    },
+    "RAFeisen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RAFeisen"
+          }
+        }
+      }
+    },
+    "tab.codes" : {
+      "comment" : "Tab Title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Codes"
+          }
+        }
+      }
+    },
+    "tab.profile" : {
+      "comment" : "Tab Title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "TOTP Codes Configured" : {
+
+    },
+    "Yes" : {
+
+    },
+    "You have denied access. Please go to the settings app and locate this application and turn Face ID on." : {
+      "comment" : "Error: Authentication Service",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have denied access. Please go to the settings app and locate this application and turn Face ID on."
+          }
+        }
+      }
+    },
+    "You have not registered any Face Ids yet." : {
+      "comment" : "Error: Authentication Service",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have not registered any Face Ids yet."
+          }
+        }
+      }
+    },
+    "You have not registered any fingerprints yet." : {
+      "comment" : "Error: Authentication Service",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have not registered any fingerprints yet."
+          }
+        }
+      }
+    },
+    "Your credentials have not been saved. Do you want to save them after the next successful login?" : {
+      "comment" : "Error: Authentication Service",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your credentials have not been saved. Do you want to save them after the next successful login?"
+          }
+        }
+      }
+    },
+    "Your face or fingerprint were not recognized." : {
+      "comment" : "Error: Authentication Service",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your face or fingerprint were not recognized."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
