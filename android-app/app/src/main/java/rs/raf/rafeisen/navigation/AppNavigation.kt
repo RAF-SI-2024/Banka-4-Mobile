@@ -12,8 +12,8 @@ import rs.raf.rafeisen.screen.home.HomeScreen
 import rs.raf.rafeisen.screen.home.HomeViewModel
 import rs.raf.rafeisen.screen.login.LoginScreen
 import rs.raf.rafeisen.screen.login.LoginViewModel
-import rs.raf.rafeisen.screen.totp.AddTotpScreen
-import rs.raf.rafeisen.screen.totp.AddTotpViewModel
+import rs.raf.rafeisen.totp.add.AddTotpScreen
+import rs.raf.rafeisen.totp.add.AddTotpViewModel
 
 @Composable
 fun AppNavigation(startDestination: String) {
