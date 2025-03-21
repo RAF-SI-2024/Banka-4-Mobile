@@ -49,4 +49,12 @@ class AuthService @Inject constructor(
         )
         activeAccountStore.setActiveUserId(clientMeResponse.id)
     }
+
+    suspend fun logout() =
+        withContext(dispatchers.io()) {
+            /* TODO: call backend to invalidate jwt */
+            accountsStore.deleteAccount(userId = activeAccountStore.activeUserId())
+            activeAccountStore.clearActiveUserAccount()
+        }
+
 }
