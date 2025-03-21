@@ -9,11 +9,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import rs.raf.rafeisen.model.TotpSecret
 import rs.raf.rafeisen.security.Encryption
 import rs.raf.rafeisen.serialization.CredentialsSerialization
 import rs.raf.rafeisen.serialization.StringSerializer
-import rs.raf.rafeisen.serialization.TotpSecretsSerialization
 import rs.raf.rafeisen.serialization.UserAccountsSerialization
 import rs.raf.rafeisen.store.Credential
 import rs.raf.rafeisen.store.UserAccount
@@ -55,16 +53,6 @@ object StoreModule {
             produceFile = { context.dataStoreFile("active_account.txt") },
             serializer = StringSerializer(),
         )
-
-    @Provides
-    @Singleton
-    fun provideTotpSecretsStore(
-        @ApplicationContext context: Context,
-        encryption: Encryption
-    ): DataStore<List<TotpSecret>> = DataStoreFactory.create(
-        produceFile = { context.dataStoreFile("totp_secrets.json") },
-        serializer = TotpSecretsSerialization(encryption = encryption)
-    )
 }
 
 @Qualifier
