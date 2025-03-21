@@ -1,9 +1,11 @@
 [versions]
 agp = "8.9.0"
 javapoet = "1.13.0"
+kotlinOnetimepassword = "2.4.1"
 ksp = "2.1.10-1.0.31"
 room = "2.6.1"
 dagger = "2.55"
+sqlcipher-android = "4.6.1"
 hilt = "1.2.0"
 datastore = "1.1.3"
 kotlin = "2.1.10"
@@ -37,6 +39,7 @@ hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt" }
 hilt-compiler-dagger = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 hilt-compiler-android = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
+kotlin-onetimepassword = { module = "dev.turingcomplete:kotlin-onetimepassword", version.ref = "kotlinOnetimepassword" }
 navigation-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
@@ -54,11 +57,15 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 # Lint and Analyzer
 ktlint-compose-rules = { module = "io.nlopez.compose.rules:ktlint", version.ref = "ktlint-compose-rules" }
 
+# Database
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+sqlcipher-android = { module = "net.zetetic:sqlcipher-android", version.ref = "sqlcipher-android" }
+
+
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

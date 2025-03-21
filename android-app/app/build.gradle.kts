@@ -9,6 +9,7 @@ plugins {
 	alias(libs.plugins.detekt)
 	alias(libs.plugins.ktlint.wrapper.plugin)
 	alias(libs.plugins.google.dagger.hilt)
+	id("androidx.room")
 }
 
 buildscript {
@@ -36,15 +37,10 @@ android {
 		}
 	}
 
-	buildTypes {
-		release {
-			isMinifyEnabled = false
-			proguardFiles(
-				getDefaultProguardFile("proguard-android-optimize.txt"),
-				"proguard-rules.pro",
-			)
-		}
+	room {
+		schemaDirectory("$projectDir/schemas")
 	}
+
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
@@ -79,9 +75,15 @@ dependencies {
 
 	ksp(libs.hilt.compiler.android)
 	ksp(libs.hilt.compiler.dagger)
+
 	ksp(libs.androidx.room.compiler)
+	implementation(libs.androidx.room.runtime)
+	implementation(libs.androidx.room.ktx)
+	implementation(libs.androidx.room.runtime)
+	implementation(libs.sqlcipher.android)
+
+
 	ksp(libs.hilt.compiler)
-	annotationProcessor(libs.androidx.room.compiler)
 	implementation(libs.navigation.hilt)
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.datastore)
@@ -97,8 +99,6 @@ dependencies {
 	implementation(libs.androidx.material3)
 	implementation(libs.kotlinx.serialization.json)
 	implementation(libs.androidx.navigation.compose)
-	implementation(libs.androidx.room.runtime)
-	implementation(libs.androidx.room.ktx)
 	implementation(libs.okhttp)
 	implementation(libs.okhttp.logging.interceptor)
 	implementation(libs.retrofit)
@@ -106,6 +106,7 @@ dependencies {
 	implementation(libs.retrofit.serialization.converter)
 	implementation(libs.core.splashscreen)
 	implementation(libs.timber)
+	implementation(libs.kotlin.onetimepassword)
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
