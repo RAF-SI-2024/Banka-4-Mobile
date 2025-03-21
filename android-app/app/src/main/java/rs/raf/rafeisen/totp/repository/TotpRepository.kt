@@ -1,5 +1,6 @@
 package rs.raf.rafeisen.totp.repository
 
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.withContext
 import rs.raf.rafeisen.coroutines.CoroutineDispatcherProvider
 import rs.raf.rafeisen.db.AppDatabase
@@ -14,6 +15,11 @@ class TotpRepository @Inject constructor(
         withContext(dispatchers.io()) {
             database.totps().upsert(totp)
         }
+
+    suspend fun observeAllByUserId(userId: String) =
+        withContext(dispatchers.io()) {
+            database.totps().observeAllByUserId(userId = userId)
+        }.distinctUntilChanged()
 
     suspend fun getAllByUserId(userId: String) =
         withContext(dispatchers.io()) {

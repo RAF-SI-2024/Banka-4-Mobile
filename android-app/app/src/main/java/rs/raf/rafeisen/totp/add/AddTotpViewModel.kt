@@ -1,24 +1,22 @@
-package rs.raf.rafeisen.screen.totp
+package rs.raf.rafeisen.totp.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import rs.raf.rafeisen.screen.totp.AddTotpContract.SideEffect
-import rs.raf.rafeisen.screen.totp.AddTotpContract.UiEvent
-import rs.raf.rafeisen.screen.totp.AddTotpContract.UiState
+import rs.raf.rafeisen.totp.add.AddTotpContract.SideEffect
+import rs.raf.rafeisen.totp.add.AddTotpContract.UiEvent
+import rs.raf.rafeisen.totp.add.AddTotpContract.UiState
 import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.totp.model.Totp
 import rs.raf.rafeisen.totp.repository.TotpRepository
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class AddTotpViewModel @Inject constructor(

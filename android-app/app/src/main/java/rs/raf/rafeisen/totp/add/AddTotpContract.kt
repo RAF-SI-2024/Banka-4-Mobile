@@ -1,4 +1,4 @@
-package rs.raf.rafeisen.screen.totp
+package rs.raf.rafeisen.totp.add
 
 interface AddTotpContract {
     data class UiState(

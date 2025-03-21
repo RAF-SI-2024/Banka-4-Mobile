@@ -1,4 +1,4 @@
-package rs.raf.rafeisen.screen.totp
+package rs.raf.rafeisen.totp.add
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
