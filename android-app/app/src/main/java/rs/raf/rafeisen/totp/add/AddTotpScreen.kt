@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 fun AddTotpScreen(
     viewModel: AddTotpViewModel,
     onClose: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     val uiState = viewModel.state.collectAsState()
 
@@ -43,7 +44,7 @@ fun AddTotpScreen(
         launch {
             viewModel.effects.collect {
                 when (it) {
-                    AddTotpContract.SideEffect.TotpCodeAddedSuccessfully -> onClose()
+                    AddTotpContract.SideEffect.TotpCodeAddedSuccessfully -> navigateToHome()
                 }
             }
         }
