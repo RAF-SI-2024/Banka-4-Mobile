@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
@@ -13,38 +14,36 @@ import rs.raf.rafeisen.store.di.ActiveAccountDataStore
 import javax.inject.Inject
 
 class ActiveAccountStore
-    @Inject
-    constructor(
-        dispatchers: CoroutineDispatcherProvider,
-        accountsStore: AccountsStore,
-        @ActiveAccountDataStore private val persistence: DataStore<String>,
-    ) {
-        private val scope = CoroutineScope(dispatchers.io())
+@Inject
+constructor(
+    dispatchers: CoroutineDispatcherProvider,
+    accountsStore: AccountsStore,
+    @ActiveAccountDataStore private val persistence: DataStore<String>,
+) {
+    private val scope = CoroutineScope(dispatchers.io())
 
-        val activeUserId =
-            persistence.data
-                .stateIn(
-                    scope = scope,
-                    started = SharingStarted.Eagerly,
-                    initialValue = runBlocking { persistence.data.first() },
-                )
+    val activeUserId =
+        persistence.data
+            .stateIn(
+                scope = scope,
+                started = SharingStarted.Eagerly,
+                initialValue = runBlocking { persistence.data.first() },
+            )
 
-        fun activeUserId() = activeUserId.value
+    fun activeUserId() = activeUserId.value
 
-        @get:Throws(NoSuchElementException::class)
-        val activeUserAccount =
-            accountsStore.userAccounts
-                .map { it.first { it.id == activeUserId() } }
-                .distinctUntilChanged()
+    val activeUserAccount =
+        accountsStore.userAccounts
+            .map { it.firstOrNull { it.id == activeUserId() } ?: UserAccount.EMPTY }
+            .distinctUntilChanged()
 
-        @Throws(NoSuchElementException::class)
-        suspend fun activeUserAccount() = activeUserAccount.first()
+    suspend fun activeUserAccount() = activeUserAccount.firstOrNull() ?: UserAccount.EMPTY
 
-        suspend fun setActiveUserId(userId: String) {
-            persistence.updateData { userId }
-        }
-
-        suspend fun clearActiveUserAccount() {
-            persistence.updateData { "" }
-        }
+    suspend fun setActiveUserId(userId: String) {
+        persistence.updateData { userId }
     }
+
+    suspend fun clearActiveUserAccount() {
+        persistence.updateData { "" }
+    }
+}
