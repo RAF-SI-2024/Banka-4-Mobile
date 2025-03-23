@@ -36,7 +36,7 @@ struct TotpView: View {
                 } else {
                     List {
                         ForEach(codes, id: \.self) { code in
-                            CodeRow(code: code)
+                            TotpCodeCardView(code: code)
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
                                         deleteCode(code)
@@ -52,23 +52,28 @@ struct TotpView: View {
             .navigationTitle("Authenticator Codes")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        Task {
-                            let result = await verifyService.regenerateAuthenticator()
-                            switch result {
-                            case .success(let response):
-                                handleTOTPURL(URL(string:  response.url)!)
-                            case .failure(let error):
-                                debugPrint(error)
+                    if codes.count == 0 {
+                        Button {
+                            Task {
+                                let result = await verifyService.regenerateAuthenticator()
+                                switch result {
+                                case .success(let response):
+                                    handleTOTPURL(URL(string:  response.url)!)
+                                case .failure(let error):
+                                    debugPrint(error)
+                                }
                             }
+                        } label: {
+                            Image(systemName: "plus")
                         }
-                    } label: {
-                        Image(systemName: "plus")
                     }
                 }
             }
             .onAppear(perform: updatePredicate)
             .onChange(of: email, updatePredicate)
+            .onOpenURL { url in
+                handleTOTPURL(url)
+            }
         }
     }
     
@@ -158,103 +163,6 @@ struct TotpView: View {
     }
     
 
-}
-
-struct CodeRow: View {
-    @ObservedObject var code: TotpCode
-    @State private var currentCode: String = ""
-    @State private var timeRemaining: Double = 30
-    @State private var totpInstance: TOTP?
-    let verifyService: VerifyService = VerifyAPIService()
-
-    // Timer updates every second to stay in sync
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
-    var body: some View {
-        HStack(spacing: 16) {
-            Image(systemName: "key.fill")
-                .font(.title2)
-                .foregroundColor(.blue)
-                .frame(width: 40)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(code.name ?? "Unknown Service")
-                    .font(.headline)
-                
-                Text(currentCode)
-                    .font(.system(.title3, design: .monospaced))
-                    .contentTransition(.numericText())
-                
-                ProgressView(value: timeRemaining, total: Double(code.period))
-                    .tint(timeRemaining < 10 ? .red : .blue)
-                    .animation(.easeInOut, value: timeRemaining)
-            }
-            
-            Spacer()
-            
-            VStack(alignment: .trailing) {
-                Text("\(Int(timeRemaining))s")
-                    .monospacedDigit()
-                    .foregroundColor(timeRemaining < 10 ? .red : .secondary)
-                    .font(.caption)
-                
-                Text("\(code.digits) digits")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-        }
-        .padding(.vertical, 8)
-        .onAppear(perform: initializeTOTP)
-        .onReceive(timer) { _ in
-            updateCodeAndTimer()
-        }
-    }
-    
-    private func initializeTOTP() {
-        guard let secretString = code.secret,
-              let secretData = base32DecodeToData(secretString) else {
-            currentCode = "Invalid secret"
-            return
-        }
-        
-        let digits = Int(code.digits)
-        let period = Int(code.period)
-        
-        guard (6...8).contains(digits) else {
-            currentCode = "Invalid digits"
-            return
-        }
-        
-        totpInstance = TOTP(
-            secret: secretData,
-            digits: digits,
-            timeInterval: period,
-            algorithm: .sha1
-        )
-        
-        updateCodeAndTimer()
-        
-        Task { await verifyService.verifyNewAuthenticatorCode(code: currentCode) }
-
-    }
-    
-    private func updateCodeAndTimer() {
-        guard let totp = totpInstance else { return }
-        
-        let currentDate = Date()
-        let currentTime = Int(currentDate.timeIntervalSince1970)
-        
-        // Generate new code
-        if let code = totp.generate(secondsPast1970: currentTime) {
-            currentCode = code
-        }
-        
-        // Calculate remaining time
-        if code.period != 0 {
-            let remainingTime = Int(code.period) - (currentTime % Int(code.period))
-            timeRemaining = Double(remainingTime)
-        }
-    }
 }
 
 #Preview {
