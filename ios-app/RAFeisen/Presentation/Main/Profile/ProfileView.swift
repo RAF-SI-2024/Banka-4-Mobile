@@ -67,16 +67,6 @@ struct ProfileView: View {
                                 .foregroundColor((client?.has2FA ?? false) ? .green : .red)
                         }
                         
-                        if (client?.has2FA ?? false) {
-                            HStack {
-                                Image(systemName: "key.fill")
-                                    .foregroundColor(.purple)
-                                Text("TOTP Codes Configured")
-                                Spacer()
-                                Text("\(client?.totpSecret?.count ?? 0)")
-                                    .foregroundColor(.secondary)
-                            }
-                        }
                     }
                     .padding()
                     .background(Color(.systemBackground))
@@ -89,11 +79,11 @@ struct ProfileView: View {
                             Spacer()
                             Text("profile.logout")
                                 .font(.headline)
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                             Spacer()
                         }
                         .padding()
-                        .background(Color.black)
+                        .background(Color.white)
                         .cornerRadius(10)
                     }
                     .padding(.top, 20)
