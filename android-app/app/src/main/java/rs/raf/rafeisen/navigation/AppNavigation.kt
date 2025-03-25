@@ -3,7 +3,6 @@ package rs.raf.rafeisen.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
@@ -21,6 +20,7 @@ import rs.raf.rafeisen.screen.login.LoginScreen
 import rs.raf.rafeisen.screen.login.LoginViewModel
 import rs.raf.rafeisen.screen.logout.LogoutScreen
 import rs.raf.rafeisen.screen.logout.LogoutViewModel
+import rs.raf.rafeisen.screen.landing.LandingScreen
 import rs.raf.rafeisen.totp.add.AddTotpScreen
 import rs.raf.rafeisen.totp.add.AddTotpViewModel
 
@@ -31,22 +31,31 @@ fun AppNavigation(startDestination: String) {
     val drawerDestinationHandler: (DrawerScreenDestination) -> Unit = {
         when (it) {
             DrawerScreenDestination.Home -> navController.navigateToHome()
-            /* TODO: use userId to logout given user, this will be used later for multi-account support */
             is DrawerScreenDestination.SignOut -> navController.navigateToLogout()
         }
     }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = startDestination, // Preporučeno: "login" ako korisnik još nije ulogovan
     ) {
+        landing(
+            route = "landing",
+            navController = navController,
+        )
         home(
             route = "home",
             navController = navController,
             onDrawerScreenDestination = drawerDestinationHandler,
         )
-        login(route = "login", navController = navController)
-        logout(route = "logout", navController = navController)
+        login(
+            route = "login",
+            navController = navController
+        )
+        logout(
+            route = "logout",
+            navController = navController
+        )
         addTotp(
             route = "totp",
             arguments = listOf(
@@ -69,27 +78,31 @@ fun AppNavigation(startDestination: String) {
     }
 }
 
+private fun NavGraphBuilder.landing(
+    route: String,
+    navController: NavController,
+) = composable(route = route) {
+    LandingScreen(
+        onNavigateToHome = { navController.navigateToHome() }
+    )
+}
+
 private fun NavGraphBuilder.login(
     route: String,
     navController: NavController,
-) = composable(
-    route = route,
-) {
+) = composable(route = route) {
     val viewModel = hiltViewModel<LoginViewModel>()
     LoginScreen(
         viewModel = viewModel,
-        onNavigateToHome = { navController.navigateToHome() },
+        onNavigateToHome = { navController.navigateToLandingPage() } // Nakon login-a prelazi se na landing page
     )
 }
 
 private fun NavGraphBuilder.logout(
     route: String,
     navController: NavController,
-) = dialog(
-    route = route,
-) {
+) = dialog(route = route) {
     val viewModel = hiltViewModel<LogoutViewModel>()
-
     LogoutScreen(
         viewModel = viewModel,
         onClose = { navController.popBackStack() },
@@ -101,9 +114,7 @@ private fun NavGraphBuilder.home(
     route: String,
     navController: NavController,
     onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
-) = composable(
-    route = route,
-) {
+) = composable(route = route) {
     val viewModel = hiltViewModel<HomeViewModel>()
     HomeScreen(
         viewModel = viewModel,
@@ -123,7 +134,6 @@ private fun NavGraphBuilder.addTotp(
     deepLinks = deepLinks,
 ) {
     val viewModel = hiltViewModel<AddTotpViewModel>()
-
     AddTotpScreen(
         viewModel = viewModel,
         navigateToHome = {
