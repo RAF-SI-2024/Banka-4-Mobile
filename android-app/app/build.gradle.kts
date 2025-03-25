@@ -53,20 +53,16 @@ android {
 	}
 }
 
-subprojects {
-	apply(plugin = "org.jlleitschuh.gradle.ktlint")
-	configure<KtlintExtension> {
-		version = "1.0.1"
-		android = true
-		verbose = true
-	}
+configure<KtlintExtension> {
+	version = "1.5.0"
+	android = true
+	verbose = true
+}
 
-	apply(plugin = "io.gitlab.arturbosch.detekt")
-	detekt {
-		buildUponDefaultConfig = true
-		allRules = false
-		config.setFrom("$rootDir/detekt.yml")
-	}
+detekt {
+	buildUponDefaultConfig = true
+	allRules = false
+	config.setFrom("$rootDir/detekt.yml")
 }
 
 dependencies {
