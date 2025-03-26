@@ -1,4 +1,4 @@
-package rs.raf.rafeisen.screen.landing
+package rs.raf.rafeisen.screen.landing.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
