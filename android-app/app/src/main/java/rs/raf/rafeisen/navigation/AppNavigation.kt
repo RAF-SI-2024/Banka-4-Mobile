@@ -40,12 +40,12 @@ fun AppNavigation(startDestination: String) {
         navController = navController,
         startDestination = startDestination,
     ) {
-        landing(
-            route = "landing",
-            navController = navController,
-        )
         home(
             route = "home",
+            navController = navController
+        )
+        totp(
+            route = "totp",
             navController = navController,
             onDrawerScreenDestination = drawerDestinationHandler,
         )
@@ -58,7 +58,7 @@ fun AppNavigation(startDestination: String) {
             navController = navController
         )
         addTotp(
-            route = "totp",
+            route = "addTotp",
             arguments = listOf(
                 navArgument(SECRET) {
                     type = NavType.StringType
@@ -79,14 +79,27 @@ fun AppNavigation(startDestination: String) {
     }
 }
 
-private fun NavGraphBuilder.landing(
+private fun NavGraphBuilder.home(
     route: String,
     navController: NavController,
 ) = composable(route = route) {
     val viewModel = hiltViewModel<LandingViewModel>()
     LandingScreen(
         viewModel = viewModel,
-        onNavigateToHome = { navController.navigateToHome() }
+        onNavigateToHome = { navController.navigateToTotp() }
+    )
+}
+
+private fun NavGraphBuilder.totp(
+    route: String,
+    navController: NavController,
+    onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
+) = composable(route = route) {
+    val viewModel = hiltViewModel<HomeViewModel>()
+    HomeScreen(
+        viewModel = viewModel,
+        onDrawerScreenDestinationClick = onDrawerScreenDestination,
+        onAddTotpClick = { navController.navigateToAddTotp() },
     )
 }
 
@@ -97,7 +110,7 @@ private fun NavGraphBuilder.login(
     val viewModel = hiltViewModel<LoginViewModel>()
     LoginScreen(
         viewModel = viewModel,
-        onNavigateToHome = { navController.navigateToLandingPage() } // Nakon login-a prelazi se na landing page
+        onNavigateToHome = { navController.navigateToHome() }
     )
 }
 
@@ -110,19 +123,6 @@ private fun NavGraphBuilder.logout(
         viewModel = viewModel,
         onClose = { navController.popBackStack() },
         navigateToLogin = { navController.navigateToLogin() },
-    )
-}
-
-private fun NavGraphBuilder.home(
-    route: String,
-    navController: NavController,
-    onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
-) = composable(route = route) {
-    val viewModel = hiltViewModel<HomeViewModel>()
-    HomeScreen(
-        viewModel = viewModel,
-        onDrawerScreenDestinationClick = onDrawerScreenDestination,
-        onAddTotpClick = { navController.navigateToAddTotp() },
     )
 }
 
@@ -141,7 +141,7 @@ private fun NavGraphBuilder.addTotp(
         viewModel = viewModel,
         navigateToHome = {
             navController.popBackStack()
-            navController.navigateToHome()
+            navController.navigateToTotp()
         },
         onClose = { navController.popBackStack() },
     )
