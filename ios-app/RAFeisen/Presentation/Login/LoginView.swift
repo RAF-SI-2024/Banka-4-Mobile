@@ -99,31 +99,38 @@ struct LoginView: View {
             .padding(.horizontal, 40)
             .background {
                 ZStack {
-                    Circle()
-                        .fill(
-                            .linearGradient(colors: [
-                                .blue,
-                                .teal
-                            ], startPoint: .top, endPoint: .bottom)
-                        )
-                        .frame(width: 140, height: 140)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .offset(x: -25, y: -55)
+                    BubbleView(
+                        colors: [.blue, .teal],
+                        alignment: .topLeading,
+                        xOffsetRange: -60...(-20),
+                        yOffsetRange: -80...(-50),
+                        scaleRange: 0.8...1.2,
+                        rotationRange: 0...180,
+                        duration: 15
+                    )
                     
-                    Circle()
-                        .fill(
-                            .linearGradient(colors: [
-                                .yellow,
-                                .orange
-                            ], startPoint: .top, endPoint: .bottom)
-                        )
-                        .frame(width: 140, height: 140)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                        .offset(x: 25, y: 55)
-
+                    BubbleView(
+                        colors: [.orange, .yellow],
+                        alignment: .bottomTrailing,
+                        xOffsetRange: 20...60,
+                        yOffsetRange: 50...80,
+                        scaleRange: 0.7...1.1,
+                        rotationRange: (-180)...0,
+                        duration: 18
+                    )
+                    
+                    BubbleView(
+                        colors: [.purple, .pink],
+                        alignment: .topTrailing,
+                        xOffsetRange: -30...30,
+                        yOffsetRange: -100...(-60),
+                        scaleRange: 0.5...1.0,
+                        rotationRange: 0...360,
+                        duration: 20
+                    )
                 }
+                .blur(radius: 10)
             }
-            
         }
         .frame(maxWidth: 390)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -161,6 +168,45 @@ struct LoginView: View {
         }
     }
     
+}
+
+
+struct BubbleView: View {
+    let colors: [Color]
+    let alignment: Alignment
+    let xOffsetRange: ClosedRange<CGFloat>
+    let yOffsetRange: ClosedRange<CGFloat>
+    let scaleRange: ClosedRange<CGFloat>
+    let rotationRange: ClosedRange<Double>
+    let duration: Double
+    
+    @State private var animate = false
+    
+    var body: some View {
+        Circle()
+            .fill(
+                AngularGradient(
+                    colors: colors,
+                    center: .center,
+                    startAngle: .degrees(animate ? rotationRange.lowerBound : rotationRange.upperBound),
+                    endAngle: .degrees(animate ? rotationRange.upperBound : rotationRange.lowerBound)
+                )
+            )
+            .frame(width: 140, height: 140)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
+            .offset(
+                x: animate ? xOffsetRange.upperBound : xOffsetRange.lowerBound,
+                y: animate ? yOffsetRange.upperBound : yOffsetRange.lowerBound
+            )
+            .scaleEffect(animate ? scaleRange.upperBound : scaleRange.lowerBound)
+            .opacity(animate ? 0.6 : 0.3)
+            .animation(
+                .easeInOut(duration: duration)
+                .repeatForever(),
+                value: animate
+            )
+            .onAppear { animate = true }
+    }
 }
 
 #Preview {
