@@ -1,7 +1,6 @@
 package rs.raf.rafeisen.screen.home.mock
 
-import rs.raf.rafeisen.api.client.response.ClientMeResponse
-import rs.raf.rafeisen.model.Gender
+
 
 data class AccountMock(
     val id: String,
@@ -14,7 +13,6 @@ data class AccountMock(
     val allowedOverdraft: Double
 )
 
-
 data class TransactionMock(
     val id: String,
     val date: String,
@@ -26,19 +24,7 @@ data class TransactionMock(
 object HomeMockData {
 
 
-    fun getMockClientMeResponse(): ClientMeResponse {
-        return ClientMeResponse(
-            id = "mock-client-id",
-            firstName = "Marko",
-            lastName = "Marković",
-            gender = Gender.Male,
-            email = "marko.markovic@example.com",
-            phone = "+381 63 1234567",
-            address = "Ulica Slobodana Jovanovića 10, Beograd"
-        )
-    }
 
-    // Mock račun, zasnovan na AccountDto iz swaggera
     fun getMockAccount(): AccountMock {
         return AccountMock(
             id = "account-id-001",
@@ -51,7 +37,6 @@ object HomeMockData {
             allowedOverdraft = 0.00
         )
     }
-
 
     fun getMockTransactions(): List<TransactionMock> {
         return listOf(

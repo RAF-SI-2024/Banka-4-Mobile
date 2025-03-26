@@ -10,16 +10,16 @@ import rs.raf.rafeisen.screen.home.mock.HomeMockData
 
 class LandingViewModel : ViewModel() {
 
-    private val _state = MutableStateFlow(LandingContract.LandingState())
+    private val _state = MutableStateFlow(LandingContract.LandingUIState())
     val state = _state.asStateFlow()
 
     init {
         fetchData()
     }
 
-    fun onEvent(event: LandingContract.LandingEvent) {
+    fun onEvent(event: LandingContract.LandingUIEvent) {
         when (event) {
-            LandingContract.LandingEvent.FetchData -> fetchData()
+            LandingContract.LandingUIEvent.LoadAccountAndCardsData -> fetchData()
             else -> {}
         }
     }
@@ -27,16 +27,16 @@ class LandingViewModel : ViewModel() {
     private fun fetchData() {
         viewModelScope.launch {
             try {
-                delay(500L) // Simulacija čekanja
+                delay(500L)
                 val account = HomeMockData.getMockAccount()
                 val transactions = HomeMockData.getMockTransactions()
-                _state.value = LandingContract.LandingState(
+                _state.value = LandingContract.LandingUIState(
                     isLoading = false,
                     account = account,
                     transactions = transactions
                 )
             } catch (e: Exception) {
-                _state.value = LandingContract.LandingState(
+                _state.value = LandingContract.LandingUIState(
                     isLoading = false,
                     error = e.message ?: "Unknown error"
                 )
