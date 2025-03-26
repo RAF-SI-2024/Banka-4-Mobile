@@ -1,67 +1,109 @@
-package rs.raf.rafeisen.screen.landing
+package rs.raf.rafeisen.screen.landing.screen
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import rs.raf.rafeisen.drawer.DrawerScreenDestination
+import rs.raf.rafeisen.screen.landing.*
+import rs.raf.rafeisen.screen.landing.component.*
 import rs.raf.rafeisen.screen.landing.mock.mockCards
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LandingScreen(
     viewModel: LandingViewModel,
-    onNavigateToHome: () -> Unit
+    onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
+    onNavigateToTotp: () -> Unit,
 ) {
-    val state = viewModel.state.collectAsState().value
-    LandingScreen(
-        state = state,
-        onNavigateToHome = onNavigateToHome
-    )
-}
+    val state = viewModel.state.collectAsState()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-@Composable
-private fun LandingScreen(
-    state: LandingContract.LandingUIState,
-    onNavigateToHome: () -> Unit
-) {
-    var selectedIndex by remember { mutableStateOf(0) }
-
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(
-                selectedIndex = selectedIndex,
-                onItemSelected = { index ->
-                    selectedIndex = index
-                    if (index == 2) {
-                        onNavigateToHome()
+    LandingDrawerScaffold(
+        drawerState = drawerState,
+        onDrawerDestinationClick = onDrawerScreenDestinationClick,
+        onBottomItemClick = { index ->
+            if (index == 2) onNavigateToTotp()
+        },
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Overview") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        scope.launch {
+                            if (drawerState.isOpen) drawerState.close()
+                            else drawerState.open()
+                        }
+                    }) {
+                        Icon(Icons.Default.Menu, contentDescription = "Menu")
                     }
                 }
             )
         }
     ) { paddingValues ->
-        Surface(
+        LandingScreenContent(
+            state = state.value,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-        ) {
-            when {
-                state.isLoading -> CircularProgressIndicator()
-                state.error != null -> Text(text = "Error: ${state.error}")
-                else -> {
-                    Column(modifier = Modifier.padding(paddingValues)) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        CardSection(cards = mockCards)
-                        state.account?.let { account ->
-                            AccountBalanceSection(
-                                accountName = account.accountName,
-                                accountNumber = account.accountNumber,
-                                availableBalance = account.availableBalance,
-                                currency = account.currency
-                            )
-                        }
-                        FinanceSection()
-                        TransactionsSection(transactions = state.transactions)
+                .padding(16.dp),
+            onReload = {
+                viewModel.sendEvent(LandingContract.LandingUIEvent.LoadAccountAndCardsData)
+            }
+        )
+    }
+}
+
+
+@Composable
+private fun LandingScreenContent(
+    state: LandingContract.LandingUIState,
+    modifier: Modifier = Modifier,
+    onReload: () -> Unit
+) {
+    Surface(modifier = modifier) {
+        when {
+            state.isLoading -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(strokeWidth = 2.dp)
+            }
+
+            state.error != null -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Something went wrong. Please try again.")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = onReload) {
+                        Text("Retry")
                     }
+                }
+            }
+
+            else -> {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    CardSection(cards = mockCards)
+                    state.account?.let { account ->
+                        AccountBalanceSection(
+                            accountName = account.accountName,
+                            accountNumber = account.accountNumber,
+                            availableBalance = account.availableBalance,
+                            currency = account.currency
+                        )
+                    }
+                    FinanceSection()
+                    TransactionsSection(transactions = state.transactions)
                 }
             }
         }

@@ -16,12 +16,12 @@ import androidx.navigation.navDeepLink
 import rs.raf.rafeisen.drawer.DrawerScreenDestination
 import rs.raf.rafeisen.screen.home.HomeScreen
 import rs.raf.rafeisen.screen.home.HomeViewModel
+import rs.raf.rafeisen.screen.landing.LandingViewModel
+import rs.raf.rafeisen.screen.landing.screen.LandingScreen
 import rs.raf.rafeisen.screen.login.LoginScreen
 import rs.raf.rafeisen.screen.login.LoginViewModel
 import rs.raf.rafeisen.screen.logout.LogoutScreen
 import rs.raf.rafeisen.screen.logout.LogoutViewModel
-import rs.raf.rafeisen.screen.landing.LandingScreen
-import rs.raf.rafeisen.screen.landing.LandingViewModel
 import rs.raf.rafeisen.totp.add.AddTotpScreen
 import rs.raf.rafeisen.totp.add.AddTotpViewModel
 
@@ -42,7 +42,8 @@ fun AppNavigation(startDestination: String) {
     ) {
         home(
             route = "home",
-            navController = navController
+            navController = navController,
+            onDrawerScreenDestination = drawerDestinationHandler
         )
         totp(
             route = "totp",
@@ -82,13 +83,16 @@ fun AppNavigation(startDestination: String) {
 private fun NavGraphBuilder.home(
     route: String,
     navController: NavController,
+    onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
 ) = composable(route = route) {
     val viewModel = hiltViewModel<LandingViewModel>()
     LandingScreen(
         viewModel = viewModel,
-        onNavigateToHome = { navController.navigateToTotp() }
+        onDrawerScreenDestinationClick = onDrawerScreenDestination,
+        onNavigateToTotp = { navController.navigateToTotp() }
     )
 }
+
 
 private fun NavGraphBuilder.totp(
     route: String,

@@ -1,4 +1,4 @@
-package rs.raf.rafeisen.screen.landing
+package rs.raf.rafeisen.screen.landing.component
 
 
 import androidx.compose.foundation.background
@@ -19,12 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarHalf
-import androidx.compose.material.icons.rounded.Wallet
 import androidx.compose.material.icons.rounded.MonetizationOn
 import androidx.compose.ui.tooling.preview.Preview
 import rs.raf.rafeisen.ui.theme.OrangeStart
-import rs.raf.rafeisen.ui.theme.BlueStart
-import rs.raf.rafeisen.ui.theme.PurpleStart
 import rs.raf.rafeisen.ui.theme.GreenStart
 
 data class Finance(
