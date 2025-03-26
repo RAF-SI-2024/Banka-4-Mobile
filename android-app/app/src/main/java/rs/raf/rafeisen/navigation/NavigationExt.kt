@@ -4,6 +4,6 @@ import androidx.navigation.NavController
 
 fun NavController.navigateToLogin() = navigate("login")
 fun NavController.navigateToLogout() = navigate("logout")
-fun NavController.navigateToAddTotp() = navigate("totp")
+fun NavController.navigateToAddTotp() = navigate("addTotp")
 fun NavController.navigateToHome() = navigate("home")
-fun NavController.navigateToLandingPage() = navigate("landing")
+fun NavController.navigateToTotp() = navigate("totp")
