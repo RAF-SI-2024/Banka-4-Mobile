@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import rs.raf.rafeisen.drawer.DrawerScreenDestination
-import rs.raf.rafeisen.screen.landing.*
 import rs.raf.rafeisen.screen.landing.component.*
 import rs.raf.rafeisen.screen.landing.mock.mockCards
 
@@ -93,19 +92,15 @@ private fun LandingScreenContent(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    CardSection(cards = mockCards)
-                    state.account?.let { account ->
-                        AccountBalanceSection(
-                            accountName = account.accountName,
-                            accountNumber = account.accountNumber,
-                            availableBalance = account.availableBalance,
-                            currency = account.currency
-                        )
+                    if (state.accounts.isNotEmpty()) {
+                        AccountBalanceSection(accounts = state.accounts)
                     }
-                    FinanceSection()
-                    TransactionsSection(transactions = state.transactions)
+                    CardSection(cards = state.cards)
+
+                    QuickAccessSection()
                 }
             }
         }
     }
 }
+

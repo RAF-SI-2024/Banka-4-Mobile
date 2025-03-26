@@ -14,6 +14,8 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Receipt
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.filled.VpnKey
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 data class BottomNavItem(
     val title: String,
@@ -59,7 +61,8 @@ fun BottomNavigationBar(
                 label = {
                     Text(
                         text = item.title,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 10.sp
                     )
                 }
             )
