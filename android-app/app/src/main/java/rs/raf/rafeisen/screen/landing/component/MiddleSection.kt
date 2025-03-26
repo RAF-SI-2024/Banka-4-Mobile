@@ -1,13 +1,13 @@
 package rs.raf.rafeisen.screen.landing.component
 
-
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarHalf
 import androidx.compose.material.icons.rounded.MonetizationOn
@@ -24,80 +23,84 @@ import androidx.compose.ui.tooling.preview.Preview
 import rs.raf.rafeisen.ui.theme.OrangeStart
 import rs.raf.rafeisen.ui.theme.GreenStart
 
-data class Finance(
+data class QuickAccess(
     val icon: androidx.compose.ui.graphics.vector.ImageVector,
     val name: String,
     val background: Color
 )
 
 
-val financeList = listOf(
-    Finance(
+val quickAccessList = listOf(
+    QuickAccess(
         icon = Icons.Rounded.StarHalf,
-        name = "My\nContacts",
+        name = "My Contacts",
         background = OrangeStart
     ),
 
-    Finance(
+    QuickAccess(
         icon = Icons.Rounded.MonetizationOn,
-        name = "My\nTransactions",
+        name = "My Transactions",
         background = GreenStart
     )
 )
 
 @Composable
-fun FinanceSection() {
-    Column {
+fun QuickAccessSection() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         Text(
-            text = "Dashboard",
-            fontSize = 24.sp,
+            text = "Quick Access",
+            style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
-        LazyRow {
-            items(financeList.size) { index ->
-                FinanceItem(
-                    finance = financeList[index],
-                    isLastItem = index == financeList.lastIndex
-                )
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(
+                items = quickAccessList,
+                key = { it.name }
+            ) { quickAccess ->
+                QuickAccessItem(quickAccess = quickAccess)
             }
         }
     }
 }
 
 @Composable
-fun FinanceItem(finance: Finance, isLastItem: Boolean) {
-    val endPadding = if (isLastItem) 16.dp else 0.dp
+fun QuickAccessItem(quickAccess: QuickAccess) {
     Column(
         modifier = Modifier
-            .padding(start = 16.dp, end = endPadding)
-            .clip(RoundedCornerShape(25.dp))
+            .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(13.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(finance.background)
-                .padding(6.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .background(quickAccess.background)
+                .padding(4.dp)
         ) {
             Icon(
-                imageVector = finance.icon,
-                contentDescription = finance.name,
+                imageVector = quickAccess.icon,
+                contentDescription = quickAccess.name,
                 tint = Color.White
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = finance.name,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            fontSize = 15.sp
+            text = quickAccess.name,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun PreviewFinanceSection() {
-    FinanceSection()
+fun PreviewQuickAccessSection() {
+    QuickAccessSection()
 }

@@ -16,7 +16,7 @@ import androidx.navigation.navDeepLink
 import rs.raf.rafeisen.drawer.DrawerScreenDestination
 import rs.raf.rafeisen.screen.home.HomeScreen
 import rs.raf.rafeisen.screen.home.HomeViewModel
-import rs.raf.rafeisen.screen.landing.LandingViewModel
+import rs.raf.rafeisen.screen.landing.screen.LandingViewModel
 import rs.raf.rafeisen.screen.landing.screen.LandingScreen
 import rs.raf.rafeisen.screen.login.LoginScreen
 import rs.raf.rafeisen.screen.login.LoginViewModel

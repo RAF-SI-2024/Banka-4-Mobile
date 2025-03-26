@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import rs.raf.rafeisen.screen.landing.mock.mockCards
 import rs.raf.rafeisen.screen.landing.data.CardDto
 import rs.raf.rafeisen.R
+import rs.raf.rafeisen.model.CardName
 import rs.raf.rafeisen.ui.theme.PurpleStart
 import rs.raf.rafeisen.ui.theme.PurpleEnd
 import rs.raf.rafeisen.ui.theme.BlueStart
@@ -37,18 +38,18 @@ import rs.raf.rafeisen.ui.theme.GreenStart
 import rs.raf.rafeisen.ui.theme.GreenEnd
 
 
-fun getCardGradient(cardName: String): Brush {
+fun getCardGradient(cardName: CardName): Brush {
     return when (cardName) {
-        "Visa" -> Brush.horizontalGradient(
+        CardName.Visa  -> Brush.horizontalGradient(
             colors = listOf(PurpleStart, PurpleEnd)
         )
-        "MasterCard" -> Brush.horizontalGradient(
+        CardName.MasterCard -> Brush.horizontalGradient(
             colors = listOf(BlueStart, BlueEnd)
         )
-        "DinaCard" -> Brush.horizontalGradient(
+        CardName.DinaCard -> Brush.horizontalGradient(
             colors = listOf(OrangeStart, OrangeEnd)
         )
-        "American Express" -> Brush.horizontalGradient(
+        CardName.AmericanExpress -> Brush.horizontalGradient(
             colors = listOf(GreenStart, GreenEnd)
         )
         else -> Brush.horizontalGradient(
@@ -57,12 +58,12 @@ fun getCardGradient(cardName: String): Brush {
     }
 }
 
-fun getCardImageResource(cardName: String): Int {
+fun getCardImageResource(cardName: CardName): Int {
     return when (cardName) {
-        "Visa" -> R.drawable.ic_visa
-        "MasterCard" -> R.drawable.ic_mastercard
-        "DinaCard" -> R.drawable.ic_dinacard
-        "American Express" -> R.drawable.ic_amex
+        CardName.Visa -> R.drawable.ic_visa
+        CardName.MasterCard -> R.drawable.master_card
+        CardName.DinaCard -> R.drawable.ic_dinacard
+        CardName.AmericanExpress -> R.drawable.ic_amex
         else -> R.drawable.ic_default_card
     }
 }
@@ -84,8 +85,8 @@ fun CardSection(cards: List<CardDto>) {
 
 @Composable
 fun CardItem(card: CardDto) {
-    val gradient = getCardGradient(card.cardName.toString())
-    val imageRes = getCardImageResource(card.cardName.toString())
+    val gradient = getCardGradient(card.cardName)
+    val imageRes = getCardImageResource(card.cardName)
 
     Box {
         Column(
