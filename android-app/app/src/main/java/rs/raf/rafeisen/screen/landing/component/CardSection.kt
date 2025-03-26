@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rs.raf.rafeisen.screen.landing.mock.mockCards
-import rs.raf.rafeisen.screen.landing.model.CardDto
+import rs.raf.rafeisen.screen.landing.data.CardDto
 import rs.raf.rafeisen.R
 import rs.raf.rafeisen.ui.theme.PurpleStart
 import rs.raf.rafeisen.ui.theme.PurpleEnd
@@ -80,8 +80,8 @@ fun CardSection(cards: List<CardDto>) {
 
 @Composable
 fun CardItem(card: CardDto, isLastItem: Boolean) {
-    val gradient = getCardGradient(card.cardName)
-    val imageRes = getCardImageResource(card.cardName)
+    val gradient = getCardGradient(card.cardName.toString())
+    val imageRes = getCardImageResource(card.cardName.toString())
 
     Box(
         modifier = Modifier
@@ -99,13 +99,13 @@ fun CardItem(card: CardDto, isLastItem: Boolean) {
         ) {
             Image(
                 painter = painterResource(id = imageRes),
-                contentDescription = card.cardName,
+                contentDescription = card.cardName.toString(),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.width(60.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = card.cardName,
+                text = card.cardName.toString(),
                 color = Color.White,
                 fontSize = 17.sp,
                 style = MaterialTheme.typography.bodyMedium

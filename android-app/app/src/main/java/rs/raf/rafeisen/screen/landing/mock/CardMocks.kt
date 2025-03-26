@@ -1,18 +1,21 @@
 package rs.raf.rafeisen.screen.landing.mock
 
-import rs.raf.rafeisen.screen.landing.model.AuthorizedUserDto
-import rs.raf.rafeisen.screen.landing.model.CardDto
-import rs.raf.rafeisen.screen.landing.model.ClientDto
+import rs.raf.rafeisen.model.CardName
+import rs.raf.rafeisen.model.CardType
+import rs.raf.rafeisen.model.Gender
+import rs.raf.rafeisen.screen.landing.data.AuthorizedUserDto
+import rs.raf.rafeisen.screen.landing.data.CardDto
+import rs.raf.rafeisen.screen.landing.data.ClientDto
 import java.time.LocalDate
 
 val mockCards = listOf(
     CardDto(
         cardNumber = "1234567890123456",
         cvv = "123",
-        cardName = "Visa",
+        cardName = CardName.Visa,
         creationDate = LocalDate.parse("1990-05-15"),
         expirationDate = LocalDate.parse("1994-05-15"),
-        cardType = "Debit",
+        cardType = CardType.Debit,
         limit = 5000.0,
         cardStatus = "ACTIVE",
         accountNumber = "215351385938112",
@@ -21,11 +24,10 @@ val mockCards = listOf(
             firstName = "Mehmedalija",
             lastName = "Doe",
             dateOfBirth = LocalDate.parse("1990-01-01"),
-            gender = "MALE",
+            gender = Gender.Male,
             email = "danny.jo@example.com",
             phone = "+381684523697",
             address = "123",
-            privileges = listOf("CAN_TRADE"),
             has2FA = false
         ),
         authorizedUser = AuthorizedUserDto(
@@ -33,7 +35,7 @@ val mockCards = listOf(
             firstName = "Petar",
             lastName = "Petrović",
             dateOfBirth = LocalDate.parse("1990-05-15"),
-            gender = "M",
+            gender = Gender.Male,
             email = "petar@example.com",
             phoneNumber = "+381611234567",
             address = "Njegoševa 25"
@@ -42,10 +44,10 @@ val mockCards = listOf(
     CardDto(
         cardNumber = "9876543210987654",
         cvv = "456",
-        cardName = "MasterCard",
+        cardName = CardName.MasterCard,
         creationDate = LocalDate.of(1991, 6, 20),
         expirationDate = LocalDate.of(1995, 6, 20),
-        cardType = "Debit",
+        cardType = CardType.Debit,
         limit = 6000.0,
         cardStatus = "ACTIVE",
         accountNumber = "215351385938113",
@@ -54,11 +56,10 @@ val mockCards = listOf(
             firstName = "Ana",
             lastName = "Smith",
             dateOfBirth = LocalDate.of(1989, 2, 15),
-            gender = "FEMALE",
+            gender = Gender.Female,
             email = "ana.smith@example.com",
             phone = "+381684523698",
             address = "456",
-            privileges = listOf("CAN_TRADE"),
             has2FA = true
         ),
         authorizedUser = null
@@ -66,10 +67,10 @@ val mockCards = listOf(
     CardDto(
         cardNumber = "1111222233334444",
         cvv = "789",
-        cardName = "DinaCard",
+        cardName = CardName.DinaCard,
         creationDate = LocalDate.of(1992, 7, 10),
         expirationDate = LocalDate.of(1996, 7, 10),
-        cardType = "Debit",
+        cardType = CardType.Debit,
         limit = 7000.0,
         cardStatus = "ACTIVE",
         accountNumber = "215351385938114",
@@ -78,11 +79,10 @@ val mockCards = listOf(
             firstName = "Marko",
             lastName = "Ivić",
             dateOfBirth = LocalDate.of(1990, 3, 25),
-            gender = "MALE",
+            gender = Gender.Male,
             email = "marko@example.com",
             phone = "+381684523699",
             address = "789",
-            privileges = listOf("CAN_TRADE"),
             has2FA = false
         ),
         authorizedUser = AuthorizedUserDto(
@@ -90,7 +90,7 @@ val mockCards = listOf(
             firstName = "Jelena",
             lastName = "Janković",
             dateOfBirth = LocalDate.of(1991, 8, 15),
-            gender = "FEMALE",
+            gender = Gender.Female,
             email = "jelena@example.com",
             phoneNumber = "+381611234568",
             address = "Njegoševa 25"
@@ -99,10 +99,10 @@ val mockCards = listOf(
     CardDto(
         cardNumber = "5555666677778888",
         cvv = "321",
-        cardName = "American Express",
+        cardName = CardName.AmericanExpress,
         creationDate = LocalDate.of(1993, 8, 5),
         expirationDate = LocalDate.of(1997, 8, 5),
-        cardType = "Credit",
+        cardType = CardType.Credit,
         limit = 10000.0,
         cardStatus = "ACTIVE",
         accountNumber = "215351385938115",
@@ -111,11 +111,10 @@ val mockCards = listOf(
             firstName = "John",
             lastName = "Doe",
             dateOfBirth = LocalDate.of(1985, 12, 12),
-            gender = "MALE",
+            gender = Gender.Male,
             email = "john.doe@example.com",
             phone = "+381684523700",
             address = "101",
-            privileges = listOf("CAN_TRADE"),
             has2FA = true
         ),
         authorizedUser = null
