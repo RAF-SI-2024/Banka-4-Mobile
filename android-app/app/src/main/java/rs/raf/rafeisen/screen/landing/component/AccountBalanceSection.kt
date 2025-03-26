@@ -18,8 +18,7 @@ fun AccountBalanceSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
@@ -30,7 +29,7 @@ fun AccountBalanceSection(
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = accountName,
                     style = MaterialTheme.typography.bodyLarge
@@ -43,7 +42,7 @@ fun AccountBalanceSection(
 
             HorizontalDivider()
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = "Available Balance",
                     style = MaterialTheme.typography.labelLarge,
@@ -52,7 +51,7 @@ fun AccountBalanceSection(
                 Text(
                     text = formatAmount(availableBalance, currency),
                     style = MaterialTheme.typography.displaySmall,
-                    fontSize = 28.sp
+                    fontSize = 30.sp
                 )
             }
         }
