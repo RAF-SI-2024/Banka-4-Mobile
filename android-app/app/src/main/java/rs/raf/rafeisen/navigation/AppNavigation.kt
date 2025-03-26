@@ -21,6 +21,7 @@ import rs.raf.rafeisen.screen.login.LoginViewModel
 import rs.raf.rafeisen.screen.logout.LogoutScreen
 import rs.raf.rafeisen.screen.logout.LogoutViewModel
 import rs.raf.rafeisen.screen.landing.LandingScreen
+import rs.raf.rafeisen.screen.landing.LandingViewModel
 import rs.raf.rafeisen.totp.add.AddTotpScreen
 import rs.raf.rafeisen.totp.add.AddTotpViewModel
 
@@ -37,7 +38,7 @@ fun AppNavigation(startDestination: String) {
 
     NavHost(
         navController = navController,
-        startDestination = startDestination, // Preporučeno: "login" ako korisnik još nije ulogovan
+        startDestination = startDestination,
     ) {
         landing(
             route = "landing",
@@ -82,7 +83,9 @@ private fun NavGraphBuilder.landing(
     route: String,
     navController: NavController,
 ) = composable(route = route) {
+    val viewModel = hiltViewModel<LandingViewModel>()
     LandingScreen(
+        viewModel = viewModel,
         onNavigateToHome = { navController.navigateToHome() }
     )
 }
