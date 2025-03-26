@@ -13,7 +13,7 @@ object ApiInfoModule {
     @Singleton
     @Provides
     fun apiInfo() = ApiInfo(
-        baseUrl = URL("http://localhost:8080/"
+        baseUrl = URL("http://192.168.0.195:8080/"
         )
     )
 }
