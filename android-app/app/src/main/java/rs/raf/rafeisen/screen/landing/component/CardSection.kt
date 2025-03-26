@@ -6,13 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import rs.raf.rafeisen.ui.theme.OrangeStart
 import rs.raf.rafeisen.ui.theme.OrangeEnd
 import rs.raf.rafeisen.ui.theme.GreenStart
 import rs.raf.rafeisen.ui.theme.GreenEnd
+
 
 fun getCardGradient(cardName: String): Brush {
     return when (cardName) {
@@ -70,32 +70,33 @@ fun getCardImageResource(cardName: String): Int {
 @Composable
 fun CardSection(cards: List<CardDto>) {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(0.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        itemsIndexed(cards) { index, card ->
-            CardItem(card = card, isLastItem = index == cards.lastIndex)
+        items(
+            items = cards,
+            key = { it.cardNumber }
+        ) { card ->
+            CardItem(card = card)
         }
     }
 }
 
 @Composable
-fun CardItem(card: CardDto, isLastItem: Boolean) {
+fun CardItem(card: CardDto) {
     val gradient = getCardGradient(card.cardName.toString())
     val imageRes = getCardImageResource(card.cardName.toString())
 
-    Box(
-        modifier = Modifier
-            .padding(start = 16.dp, end = if (isLastItem) 16.dp else 0.dp)
-    ) {
+    Box {
         Column(
             modifier = Modifier
-                .clip(RoundedCornerShape(25.dp))
+                .clip(MaterialTheme.shapes.large)
                 .background(gradient)
                 .width(250.dp)
                 .height(160.dp)
-                .clickable {  }
+                .clickable { }
                 .padding(vertical = 12.dp, horizontal = 16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Image(
                 painter = painterResource(id = imageRes),
@@ -103,22 +104,24 @@ fun CardItem(card: CardDto, isLastItem: Boolean) {
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.width(60.dp)
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = card.cardName.toString(),
-                color = Color.White,
-                fontSize = 17.sp,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "**** **** **** ${card.cardNumber.takeLast(4)}",
-                color = Color.White,
-                fontSize = 22.sp,
-                style = MaterialTheme.typography.headlineSmall
-            )
+            Column {
+                Text(
+                    text = card.cardName.toString(),
+                    color = Color.White,
+                    fontSize = 17.sp,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "**** **** **** ${card.cardNumber.takeLast(4)}",
+                    color = Color.White,
+                    fontSize = 22.sp,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
