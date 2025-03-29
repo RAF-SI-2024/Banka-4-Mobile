@@ -11,10 +11,12 @@ import rs.raf.rafeisen.auth.AuthService
 import rs.raf.rafeisen.screen.logout.LogoutContract.SideEffect
 import rs.raf.rafeisen.screen.logout.LogoutContract.UiEvent
 import javax.inject.Inject
+import rs.raf.rafeisen.screen.landing.db.UserDataCleaner
 
 @HiltViewModel
 class LogoutViewModel @Inject constructor(
     private val authService: AuthService,
+    private val userDataCleaner: UserDataCleaner,
 ) : ViewModel() {
 
     private val events: MutableSharedFlow<UiEvent> = MutableSharedFlow()
@@ -40,6 +42,7 @@ class LogoutViewModel @Inject constructor(
     private fun logout() =
         viewModelScope.launch {
             runCatching {
+                userDataCleaner.clearUserData()
                 authService.logout()
             }.onSuccess {
                 setEffect(SideEffect.LogoutSuccessful)

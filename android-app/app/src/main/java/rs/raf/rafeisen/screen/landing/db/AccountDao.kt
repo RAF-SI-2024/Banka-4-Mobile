@@ -16,4 +16,7 @@ interface AccountDao {
     @Query("SELECT accountNumber FROM AccountEntity")
     suspend fun getAllAccountNumbers(): List<String>
 
+    @Query("DELETE FROM AccountEntity")
+    suspend fun deleteAll()
+
 }
