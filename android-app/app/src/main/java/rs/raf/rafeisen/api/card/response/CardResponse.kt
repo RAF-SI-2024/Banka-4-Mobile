@@ -1,41 +1,44 @@
-package rs.raf.rafeisen.screen.landing.data
+package rs.raf.rafeisen.api.card.response
 
+import kotlinx.serialization.Serializable
 import rs.raf.rafeisen.model.CardName
 import rs.raf.rafeisen.model.CardType
 import rs.raf.rafeisen.model.Gender
-import java.time.LocalDate
 
-data class CardDto(
+@Serializable
+data class CardResponse(
     val cardNumber: String,
     val cvv: String,
     val cardName: CardName,
-    val creationDate: LocalDate,
-    val expirationDate: LocalDate,
+    val creationDate: String,
+    val expirationDate: String,
     val cardType: CardType,
     val limit: Double,
     val cardStatus: String,
     val accountNumber: String,
-    val client: ClientDto,
-    val authorizedUser: AuthorizedUserDto?
+    val client: ClientResponse,
+    val authorizedUser: AuthorizedUserResponse? = null
 )
 
-data class ClientDto(
+@Serializable
+data class ClientResponse(
     val id: String,
     val firstName: String,
     val lastName: String,
-    val dateOfBirth: LocalDate,
+   val dateOfBirth: String,
     val gender: Gender,
     val email: String,
     val phone: String,
     val address: String,
-    val has2FA: Boolean
+    val has2FA: Boolean? = null
 )
 
-data class AuthorizedUserDto(
+@Serializable
+data class AuthorizedUserResponse(
     val id: String,
     val firstName: String,
     val lastName: String,
-    val dateOfBirth: LocalDate,
+    val dateOfBirth: String,
     val gender: Gender,
     val email: String,
     val phoneNumber: String,

@@ -3,15 +3,17 @@ package rs.raf.rafeisen.screen.landing.screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import rs.raf.rafeisen.screen.landing.mock.HomeMockData
-import rs.raf.rafeisen.screen.landing.mock.mockCards
+import rs.raf.rafeisen.screen.landing.repository.AccountRepository
+import rs.raf.rafeisen.screen.landing.repository.CardRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class LandingViewModel @Inject constructor() : ViewModel() {
+class LandingViewModel @Inject constructor(
+    private val cardRepository: CardRepository,
+    private val accountRepository: AccountRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(LandingContract.LandingUIState())
     val state = _state.asStateFlow()
@@ -21,6 +23,8 @@ class LandingViewModel @Inject constructor() : ViewModel() {
 
     init {
         observeEvents()
+        observeCards()
+        observeAccounts()
         sendEvent(LandingContract.LandingUIEvent.LoadAccountAndCardsData)
     }
 
@@ -34,10 +38,24 @@ class LandingViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             eventFlow.collect { event ->
                 when (event) {
-                    is LandingContract.LandingUIEvent.LoadAccountAndCardsData -> loadAccountAndCardsData()
-                    else -> {}
+                    is LandingContract.LandingUIEvent.LoadAccountAndCardsData -> loadData()
                 }
+            }
+        }
+    }
 
+    private fun observeCards() {
+        viewModelScope.launch {
+            cardRepository.observeCards().collect { cards ->
+                setState { copy(cards = cards) }
+            }
+        }
+    }
+
+    private fun observeAccounts() {
+        viewModelScope.launch {
+            accountRepository.observeAccounts().collect { accounts ->
+                setState { copy(accounts = accounts) }
             }
         }
     }
@@ -46,29 +64,19 @@ class LandingViewModel @Inject constructor() : ViewModel() {
         _state.update { it.reducer() }
     }
 
-    private fun loadAccountAndCardsData() {
+    private fun loadData() {
         viewModelScope.launch {
             setState { copy(isLoading = true, error = null) }
             try {
-                delay(500L)
-                val account = HomeMockData.getMockAccount()
-                val cards = mockCards
-                val transactions = HomeMockData.getMockTransactions()
-                setState {
-                    copy(
-                        isLoading = false,
-                        accounts = listOf(account),
-                        transactions = transactions,
-                        cards = cards,
-                        error = null
-                    )
-                }
+                accountRepository.syncAccounts()
+
+                cardRepository.syncCards()
+
+                setState { copy(isLoading = false) }
             } catch (e: Exception) {
+                e.printStackTrace()
                 setState {
-                    copy(
-                        isLoading = false,
-                        error = "Something went wrong. Please try again."
-                    )
+                    copy(isLoading = false, error = "Something went wrong. Please try again.")
                 }
             }
         }
