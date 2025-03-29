@@ -13,4 +13,7 @@ interface CardDao {
 
     @Query("SELECT * FROM CardEntity")
     fun observeAll(): Flow<List<CardEntity>>
+
+    @Query("DELETE FROM CardEntity")
+    suspend fun deleteAll()
 }

@@ -16,10 +16,12 @@ import rs.raf.rafeisen.screen.login.LoginContract.UiEvent
 import rs.raf.rafeisen.screen.login.LoginContract.UiState
 import timber.log.Timber
 import javax.inject.Inject
+import rs.raf.rafeisen.screen.landing.db.UserDataCleaner
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authService: AuthService,
+    private val userDataCleaner: UserDataCleaner
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
@@ -49,6 +51,7 @@ class LoginViewModel @Inject constructor(
     private fun login(email: String, password: String) =
         viewModelScope.launch {
             try {
+                userDataCleaner.clearUserData()
                 setState { copy(isWorking = true) }
                 authService.login(email = email, password = password)
                 setEffect(SideEffect.LoginSuccessful)
