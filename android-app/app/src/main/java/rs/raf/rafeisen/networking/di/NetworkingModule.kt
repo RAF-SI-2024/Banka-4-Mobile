@@ -17,6 +17,8 @@ import rs.raf.rafeisen.networking.utils.buildAuthenticatedOkHttpClient
 import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.store.CredentialsStore
 import javax.inject.Singleton
+import rs.raf.rafeisen.api.account.AccountApi
+import rs.raf.rafeisen.api.card.CardsApi
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -97,4 +99,14 @@ object NetworkingModule {
         retrofit: Retrofit
     ): ClientApi =
         retrofit.create(ClientApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCardsApi(retrofit: Retrofit): CardsApi =
+        retrofit.create(CardsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAccountApi(retrofit: Retrofit): AccountApi =
+        retrofit.create(AccountApi::class.java)
 }

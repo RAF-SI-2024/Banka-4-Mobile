@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import rs.raf.rafeisen.screen.landing.mock.AccountMock
+import rs.raf.rafeisen.screen.landing.model.AccountUIModel
 import rs.raf.rafeisen.utils.formatAmount
 
 @Composable
-fun AccountBalanceSection(accounts: List<AccountMock>) {
+fun AccountBalanceSection(accounts: List<AccountUIModel>) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = "Account Information",
@@ -24,10 +24,7 @@ fun AccountBalanceSection(accounts: List<AccountMock>) {
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(
-                items = accounts,
-                key = { it.id }
-            ) { account ->
+            items(items = accounts, key = { it.id }) { account ->
                 AccountBalanceCard(account)
             }
         }
@@ -35,7 +32,7 @@ fun AccountBalanceSection(accounts: List<AccountMock>) {
 }
 
 @Composable
-fun AccountBalanceCard(account: AccountMock) {
+fun AccountBalanceCard(account: AccountUIModel) {
     Card(
         modifier = Modifier
             .width(280.dp)
@@ -49,7 +46,7 @@ fun AccountBalanceCard(account: AccountMock) {
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = "${account.client.firstName} ${account.client.lastName}",
+                    text = account.clientFullName,
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
@@ -79,7 +76,7 @@ fun AccountBalanceCard(account: AccountMock) {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = formatAmount(account.availableBalance, account.currency.code),
+                    text = formatAmount(account.availableBalance, account.currencyCode),
                     style = MaterialTheme.typography.displaySmall,
                     fontSize = 24.sp
                 )

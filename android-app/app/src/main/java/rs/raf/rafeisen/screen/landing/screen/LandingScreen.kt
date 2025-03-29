@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import rs.raf.rafeisen.drawer.DrawerScreenDestination
 import rs.raf.rafeisen.screen.landing.component.*
-import rs.raf.rafeisen.screen.landing.mock.mockCards
+import rs.raf.rafeisen.utils.ErrorScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,18 +75,11 @@ private fun LandingScreenContent(
                 CircularProgressIndicator(strokeWidth = 2.dp)
             }
 
-            state.error != null -> Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Something went wrong. Please try again.")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(onClick = onReload) {
-                        Text("Retry")
-                    }
-                }
-            }
+            state.error != null -> ErrorScreen(
+                message = state.error,
+                onRetry = onReload
+            )
+
 
             else -> {
                 Column(
