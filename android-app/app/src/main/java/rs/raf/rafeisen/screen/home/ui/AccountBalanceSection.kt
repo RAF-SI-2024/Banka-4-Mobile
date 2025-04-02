@@ -18,11 +18,11 @@ fun AccountBalanceSection(accounts: List<AccountUIModel>) {
             text = "Account Information",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(items = accounts, key = { it.id }) { account ->
                 AccountBalanceCard(account)
@@ -38,32 +38,32 @@ fun AccountBalanceCard(account: AccountUIModel) {
             .width(280.dp)
             .height(IntrinsicSize.Min),
         shape = MaterialTheme.shapes.large,
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = account.clientFullName,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
                 Text(
                     text = account.accountNumber,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Text(
                     text = "Type: ${account.accountType}",
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
                 Text(
                     text = "Opened: ${account.createdDate}",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
                 Text(
                     text = "Expires: ${account.expirationDate}",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
 
@@ -73,12 +73,12 @@ fun AccountBalanceCard(account: AccountUIModel) {
                 Text(
                     text = "Available Balance",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     text = formatAmount(account.availableBalance, account.currencyCode.name),
                     style = MaterialTheme.typography.displaySmall,
-                    fontSize = 24.sp
+                    fontSize = 24.sp,
                 )
             }
         }

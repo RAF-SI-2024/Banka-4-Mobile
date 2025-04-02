@@ -9,5 +9,5 @@ data class CurrencyResponse(
     val symbol: String,
     val description: String,
     val active: Boolean,
-    val code: CurrencyCode
+    val code: CurrencyCode,
 )

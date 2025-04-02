@@ -4,5 +4,5 @@ enum class AccountType {
     CheckingPersonal,
     CheckingBusiness,
     FxPersonal,
-    FxBusiness
+    FxBusiness,
 }

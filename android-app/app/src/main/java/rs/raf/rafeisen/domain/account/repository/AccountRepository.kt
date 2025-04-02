@@ -16,11 +16,12 @@ class AccountRepository @Inject constructor(
     private val dispatchers: CoroutineDispatcherProvider,
 ) {
 
-    suspend fun fetchAccounts() = withContext(dispatchers.io()) {
-        val response = api.getAllAccounts()
-        val entities = response.map { it.toEntity() }
-        database.accounts().upsertAll(entities)
-    }
+    suspend fun fetchAccounts() =
+        withContext(dispatchers.io()) {
+            val response = api.getAllAccounts()
+            val entities = response.map { it.toEntity() }
+            database.accounts().upsertAll(entities)
+        }
 
     fun observeAccounts(): Flow<List<Account>> = database.accounts().observeAll().distinctUntilChanged()
 }

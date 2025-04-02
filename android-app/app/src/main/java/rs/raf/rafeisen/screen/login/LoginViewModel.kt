@@ -18,9 +18,7 @@ import rs.raf.rafeisen.screen.login.LoginContract.UiState
 import timber.log.Timber
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val authService: AuthService,
-) : ViewModel() {
+class LoginViewModel @Inject constructor(private val authService: AuthService) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
     val state = _state.asStateFlow()

@@ -13,9 +13,7 @@ import rs.raf.rafeisen.screen.logout.LogoutContract.SideEffect
 import rs.raf.rafeisen.screen.logout.LogoutContract.UiEvent
 
 @HiltViewModel
-class LogoutViewModel @Inject constructor(
-    private val authService: AuthService,
-) : ViewModel() {
+class LogoutViewModel @Inject constructor(private val authService: AuthService) : ViewModel() {
 
     private val events: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     fun setEvent(event: UiEvent) = viewModelScope.launch { events.emit(event) }

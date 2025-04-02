@@ -15,5 +15,5 @@ enum class CardName {
     DinaCard,
 
     @SerialName("American Express")
-    AmericanExpress
+    AmericanExpress,
 }

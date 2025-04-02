@@ -15,5 +15,5 @@ data class AuthorizedUserResponse(
     val gender: Gender,
     val email: String,
     val phoneNumber: String,
-    val address: String
+    val address: String,
 )

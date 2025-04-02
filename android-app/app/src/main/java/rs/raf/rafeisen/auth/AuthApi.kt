@@ -7,7 +7,5 @@ import rs.raf.rafeisen.auth.response.LoginResponse
 
 interface AuthApi {
     @POST("/auth/client/login")
-    suspend fun login(
-        @Body body: LoginRequest,
-    ): LoginResponse
+    suspend fun login(@Body body: LoginRequest): LoginResponse
 }

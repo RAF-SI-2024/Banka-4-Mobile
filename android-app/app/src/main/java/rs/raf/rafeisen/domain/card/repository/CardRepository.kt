@@ -16,12 +16,13 @@ class CardRepository @Inject constructor(
     private val dispatchers: CoroutineDispatcherProvider,
 ) {
 
-    suspend fun fetchCards() = withContext(dispatchers.io()) {
-        val cards = api.getAllCards(page = 0, size = 50) /* lol, don't care */
+    suspend fun fetchCards() =
+        withContext(dispatchers.io()) {
+            val cards = api.getAllCards(page = 0, size = 50) /* lol, don't care */
 
-        val entities = cards.content.map { it.toEntity() }
-        database.cards().upsertAll(entities)
-    }
+            val entities = cards.content.map { it.toEntity() }
+            database.cards().upsertAll(entities)
+        }
 
     fun observeCards(): Flow<List<Card>> = database.cards().observeAll().distinctUntilChanged()
 }

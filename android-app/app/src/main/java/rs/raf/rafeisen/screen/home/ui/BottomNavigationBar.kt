@@ -1,6 +1,9 @@
 package rs.raf.rafeisen.screen.home.ui
 
-
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -8,10 +11,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -70,7 +69,7 @@ sealed class BottomNavigationDestination {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewBottomNavigationBar() {
+private fun PreviewBottomNavigationBar() {
     BottomNavigationBar(
         selectedItem = BottomNavigationDestination.Home,
         onDestinationChanged = {},

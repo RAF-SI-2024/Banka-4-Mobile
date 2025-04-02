@@ -38,16 +38,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import rs.raf.rafeisen.drawer.AppDrawerScaffold
-import rs.raf.rafeisen.drawer.DrawerScreenDestination
-import rs.raf.rafeisen.totp.model.TotpUiModel
 import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import rs.raf.rafeisen.core.ui.NavigationScaffold
-import rs.raf.rafeisen.screen.home.ui.BottomNavigationBar
+import rs.raf.rafeisen.drawer.DrawerScreenDestination
 import rs.raf.rafeisen.screen.home.ui.BottomNavigationDestination
+import rs.raf.rafeisen.totp.model.TotpUiModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,7 +85,6 @@ private fun TotpScreen(
             }
         }
     }
-
 
     NavigationScaffold(
         drawerState = drawerState,
@@ -137,7 +134,7 @@ private fun TotpScreen(
                     }
                 }
             }
-        }
+        },
     )
 }
 
@@ -181,11 +178,8 @@ private fun CodeCard(
 }
 
 @ExperimentalMaterial3Api
-
 @Composable
-private fun HomeTopAppBar(
-    drawerState: DrawerState
-) {
+private fun HomeTopAppBar(drawerState: DrawerState) {
     val uiScope = rememberCoroutineScope()
 
     CenterAlignedTopAppBar(
@@ -204,6 +198,6 @@ private fun HomeTopAppBar(
             ) {
                 Icon(imageVector = Icons.Default.Menu, contentDescription = null)
             }
-        }
+        },
     )
 }

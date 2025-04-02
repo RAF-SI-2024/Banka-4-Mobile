@@ -11,7 +11,6 @@ import rs.raf.rafeisen.domain.employee.api.response.EmployeeResponse
 import rs.raf.rafeisen.serialization.custom.BigDecimalSerializer
 import rs.raf.rafeisen.serialization.custom.LocalDateSerializer
 
-
 @Serializable
 data class AccountResponse(
     val id: String,
@@ -35,6 +34,5 @@ data class AccountResponse(
     val currency: CurrencyResponse,
     val employee: EmployeeResponse,
     val client: ClientResponse,
-    val company: CompanyResponse? = null
+    val company: CompanyResponse? = null,
 )
-

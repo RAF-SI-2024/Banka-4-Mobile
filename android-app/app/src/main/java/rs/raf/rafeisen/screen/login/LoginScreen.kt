@@ -39,7 +39,6 @@ import rs.raf.rafeisen.R
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, onNavigateToHome: () -> Unit) {
-
     val uiState = viewModel.state.collectAsState()
 
     LaunchedEffect(viewModel, viewModel.effects) {
@@ -59,10 +58,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToHome: () -> Unit) {
 }
 
 @Composable
-private fun LoginScreen(
-    state: LoginContract.UiState,
-    eventPublisher: (LoginContract.UiEvent) -> Unit,
-) {
+private fun LoginScreen(state: LoginContract.UiState, eventPublisher: (LoginContract.UiEvent) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -78,11 +74,11 @@ private fun LoginScreen(
                         LoginContract.UiEvent.LoginRequest(
                             email = email,
                             password = password,
-                        )
+                        ),
                     )
                 },
             )
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -155,7 +151,7 @@ private fun LoginForm(
             label = { Text("Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         )
 
         OutlinedTextField(
@@ -165,7 +161,7 @@ private fun LoginForm(
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         )
     }
 }

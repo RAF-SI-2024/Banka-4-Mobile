@@ -16,7 +16,5 @@ object SecurityModule {
     fun provideEncryption(): Encryption = NoEncryption() // TODO: this can and should be improved
 
     @Provides
-    fun provideDatabaseOpenHelper(): SupportSQLiteOpenHelper.Factory {
-        return FrameworkSQLiteOpenHelperFactory()
-    }
+    fun provideDatabaseOpenHelper(): SupportSQLiteOpenHelper.Factory = FrameworkSQLiteOpenHelperFactory()
 }

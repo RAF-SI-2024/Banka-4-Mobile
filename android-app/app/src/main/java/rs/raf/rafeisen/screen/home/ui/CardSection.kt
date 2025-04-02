@@ -25,31 +25,29 @@ import rs.raf.rafeisen.domain.card.model.CardType
 import rs.raf.rafeisen.screen.home.model.CardUIModel
 import rs.raf.rafeisen.ui.theme.*
 
-fun getCardGradient(cardName: CardName): Brush {
-    return when (cardName) {
-        CardName.Visa  -> Brush.horizontalGradient(colors = listOf(PurpleStart, PurpleEnd))
+fun getCardGradient(cardName: CardName): Brush =
+    when (cardName) {
+        CardName.Visa -> Brush.horizontalGradient(colors = listOf(PurpleStart, PurpleEnd))
         CardName.MasterCard -> Brush.horizontalGradient(colors = listOf(BlueStart, BlueEnd))
         CardName.DinaCard -> Brush.horizontalGradient(colors = listOf(OrangeStart, OrangeEnd))
         CardName.AmericanExpress -> Brush.horizontalGradient(colors = listOf(GreenStart, GreenEnd))
         else -> Brush.horizontalGradient(colors = listOf(Color.Gray, Color.LightGray))
     }
-}
 
-fun getCardImageResource(cardName: CardName): Int {
-    return when (cardName) {
+fun getCardImageResource(cardName: CardName): Int =
+    when (cardName) {
         CardName.Visa -> R.drawable.ic_visa
         CardName.MasterCard -> R.drawable.master_card
         CardName.DinaCard -> R.drawable.ic_dinacard
         CardName.AmericanExpress -> R.drawable.ic_amex
         else -> R.drawable.ic_default_card
     }
-}
 
 @Composable
 fun CardSection(cards: List<CardUIModel>) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(items = cards, key = { it.cardNumber }) { card ->
             CardItem(card = card)
@@ -70,33 +68,33 @@ fun CardItem(card: CardUIModel) {
                 .width(250.dp)
                 .height(160.dp)
                 .clickable { }
-                .padding( horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = card.cardName.toString(),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.width(60.dp)
+                modifier = Modifier.width(60.dp),
             )
             Column {
                 Text(
                     text = card.cardName.toString(),
                     color = Color.White,
                     fontSize = 12.sp,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Text(
                     text = "**** **** **** ${card.cardNumber.takeLast(4)}",
                     color = Color.White,
                     fontSize = 22.sp,
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
                 )
                 Text(
                     text = "Expires: ${card.expirationDate}",
                     color = Color.White,
                     fontSize = 12.sp,
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         }
@@ -105,7 +103,7 @@ fun CardItem(card: CardUIModel) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewCardSection() {
+private fun PreviewCardSection() {
     CardSection(
         cards = listOf(
             CardUIModel(
@@ -113,8 +111,8 @@ fun PreviewCardSection() {
                 cardName = CardName.Visa,
                 cardType = CardType.Debit,
                 expirationDate = LocalDate.parse("2025-12-31"),
-                clientFullName = "Petar Petrović"
-            )
-        )
+                clientFullName = "Petar Petrović",
+            ),
+        ),
     )
 }

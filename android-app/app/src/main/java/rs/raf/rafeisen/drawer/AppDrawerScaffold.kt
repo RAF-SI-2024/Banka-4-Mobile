@@ -45,5 +45,4 @@ fun AppDrawerScaffold(
             snackbarHost = snackbarHost,
         )
     }
-
 }

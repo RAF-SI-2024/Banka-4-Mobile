@@ -1,6 +1,7 @@
 package rs.raf.rafeisen.store
 
 import androidx.datastore.core.DataStore
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -11,7 +12,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import rs.raf.rafeisen.coroutines.CoroutineDispatcherProvider
 import rs.raf.rafeisen.store.di.ActiveAccountDataStore
-import javax.inject.Inject
 
 class ActiveAccountStore
 @Inject

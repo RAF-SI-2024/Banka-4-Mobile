@@ -17,18 +17,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun AppDrawer(
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-    onDrawerDestinationClick: (DrawerScreenDestination) -> Unit,
+    onDrawerDestinationClick: (DrawerScreenDestination) -> Unit, viewModel: AppDrawerViewModel = hiltViewModel(),
     content: @Composable () -> Unit,
 ) {
     val uiScope = rememberCoroutineScope()
-    val viewModel = hiltViewModel<AppDrawerViewModel>()
 
     val uiState = viewModel.state.collectAsState()
 
@@ -58,7 +55,6 @@ private fun AppDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-
                 Column(
                     modifier = Modifier.padding(16.dp),
                 ) {

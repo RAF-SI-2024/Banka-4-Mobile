@@ -5,12 +5,8 @@ import java.math.BigDecimal
 
 class BigDecimalConverter {
     @TypeConverter
-    fun fromBigDecimal(bigDecimal: BigDecimal?): String? {
-        return bigDecimal?.toPlainString()
-    }
+    fun fromBigDecimal(bigDecimal: BigDecimal?): String? = bigDecimal?.toPlainString()
 
     @TypeConverter
-    fun toBigDecimal(value: String?): BigDecimal? {
-        return value?.let { BigDecimal(it) }
-    }
+    fun toBigDecimal(value: String?): BigDecimal? = value?.let { BigDecimal(it) }
 }

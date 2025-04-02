@@ -120,28 +120,24 @@ private fun NavGraphBuilder.totp(
     )
 }
 
-private fun NavGraphBuilder.login(
-    route: String,
-    navController: NavController,
-) = composable(route = route) {
-    val viewModel = hiltViewModel<LoginViewModel>()
-    LoginScreen(
-        viewModel = viewModel,
-        onNavigateToHome = { navController.navigateToHome() },
-    )
-}
+private fun NavGraphBuilder.login(route: String, navController: NavController) =
+    composable(route = route) {
+        val viewModel = hiltViewModel<LoginViewModel>()
+        LoginScreen(
+            viewModel = viewModel,
+            onNavigateToHome = { navController.navigateToHome() },
+        )
+    }
 
-private fun NavGraphBuilder.logout(
-    route: String,
-    navController: NavController,
-) = dialog(route = route) {
-    val viewModel = hiltViewModel<LogoutViewModel>()
-    LogoutScreen(
-        viewModel = viewModel,
-        onClose = { navController.popBackStack() },
-        navigateToLogin = { navController.navigateToLogin() },
-    )
-}
+private fun NavGraphBuilder.logout(route: String, navController: NavController) =
+    dialog(route = route) {
+        val viewModel = hiltViewModel<LogoutViewModel>()
+        LogoutScreen(
+            viewModel = viewModel,
+            onClose = { navController.popBackStack() },
+            navigateToLogin = { navController.navigateToLogin() },
+        )
+    }
 
 private fun NavGraphBuilder.addTotp(
     route: String,

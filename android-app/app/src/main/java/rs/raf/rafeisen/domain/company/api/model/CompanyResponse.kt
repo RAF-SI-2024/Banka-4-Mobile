@@ -9,5 +9,5 @@ data class CompanyResponse(
     val tin: String,
     val crn: String,
     val address: String,
-    val activityCode: String
+    val activityCode: String,
 )

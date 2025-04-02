@@ -15,9 +15,10 @@ import rs.raf.rafeisen.domain.client.api.response.ClientResponse
  */
 interface AuthClientServiceInternalRequests {
     @Serializable
-    data class TokenRefreshRequest(val refreshToken: String);
+    data class TokenRefreshRequest(val refreshToken: String)
+
     @Serializable
-    data class TokenRefreshResponse(val accessToken: String);
+    data class TokenRefreshResponse(val accessToken: String)
 
     @POST("/auth/refresh-token")
     fun refreshToken(@Body tokenRefreshRequest: TokenRefreshRequest): Call<TokenRefreshResponse>

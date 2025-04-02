@@ -4,8 +4,8 @@ import rs.raf.rafeisen.domain.card.api.response.CardResponse
 import rs.raf.rafeisen.domain.card.model.Card
 import rs.raf.rafeisen.screen.home.model.CardUIModel
 
-fun CardResponse.toEntity(): Card {
-    return Card(
+fun CardResponse.toEntity(): Card =
+    Card(
         cardNumber = cardNumber,
         cvv = cvv,
         cardName = cardName,
@@ -18,14 +18,12 @@ fun CardResponse.toEntity(): Card {
         clientFirstName = client?.firstName ?: authorizedUser?.firstName,
         clientLastName = client?.lastName ?: authorizedUser?.lastName,
     )
-}
 
-fun Card.toUiModel(): CardUIModel {
-    return CardUIModel(
+fun Card.toUiModel(): CardUIModel =
+    CardUIModel(
         cardNumber = cardNumber,
         cardName = cardName,
         cardType = cardType,
         expirationDate = expirationDate,
-        clientFullName = "$clientFirstName $clientLastName"
+        clientFullName = "$clientFirstName $clientLastName",
     )
-}

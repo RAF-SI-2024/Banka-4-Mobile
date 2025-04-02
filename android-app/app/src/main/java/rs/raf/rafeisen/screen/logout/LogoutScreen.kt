@@ -6,7 +6,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 
-
 @Composable
 fun LogoutScreen(
     viewModel: LogoutViewModel,
@@ -31,10 +30,7 @@ fun LogoutScreen(
 }
 
 @Composable
-private fun LogoutScreen(
-    onLogoutRequested: () -> Unit,
-    onClose: () -> Unit,
-) {
+private fun LogoutScreen(onLogoutRequested: () -> Unit, onClose: () -> Unit) {
     AlertDialog(
         onDismissRequest = onClose,
         title = @Composable {
@@ -52,7 +48,6 @@ private fun LogoutScreen(
             TextButton(onClick = onLogoutRequested) {
                 Text(text = "Sign out")
             }
-        }
+        },
     )
-
 }

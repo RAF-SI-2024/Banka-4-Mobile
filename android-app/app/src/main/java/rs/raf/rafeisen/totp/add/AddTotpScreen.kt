@@ -55,7 +55,6 @@ fun AddTotpScreen(
         eventPublisher = viewModel::setEvent,
         onClose = onClose,
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,7 +80,7 @@ fun AddTotpScreen(
                             contentDescription = null,
                         )
                     }
-                }
+                },
             )
         },
         bottomBar = {
@@ -94,13 +93,13 @@ fun AddTotpScreen(
                         AddTotpContract.UiEvent.AddTotpCode(
                             issuer = issuer,
                             secret = secret,
-                        )
+                        ),
                     )
                 },
                 disabled = state.isWorking || issuer.isBlank() || secret.isBlank(),
                 working = state.isWorking,
             )
-        }
+        },
     ) { paddingValues ->
         AddTotpForm(
             modifier = Modifier.padding(paddingValues),
@@ -142,25 +141,24 @@ private fun AddTotpForm(
     onIssuerChanged: (String) -> Unit,
     onSecretChanged: (String) -> Unit,
 ) {
-
     Column(
         modifier = modifier
             .padding(16.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
     ) {
         OutlinedTextField(
             value = issuer,
             onValueChange = onIssuerChanged,
             label = { Text("Issuer") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = secret,
             onValueChange = onSecretChanged,
             label = { Text("Secret") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(24.dp))
     }

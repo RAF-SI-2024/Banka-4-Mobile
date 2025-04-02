@@ -17,5 +17,5 @@ data class Account(
     val currencyCode: CurrencyCode,
     /* TODO: rethink this. */
     val clientFirstName: String,
-    val clientLastName: String
+    val clientLastName: String,
 )

@@ -8,5 +8,5 @@ enum class CurrencyCode {
     JPY,
     AUD,
     CAD,
-    GBP;
+    GBP,
 }

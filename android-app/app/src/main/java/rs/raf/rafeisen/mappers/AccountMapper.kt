@@ -1,11 +1,11 @@
 package rs.raf.rafeisen.mappers
 
-import rs.raf.rafeisen.domain.account.model.Account
 import rs.raf.rafeisen.domain.account.api.response.AccountResponse
+import rs.raf.rafeisen.domain.account.model.Account
 import rs.raf.rafeisen.screen.home.model.AccountUIModel
 
-fun AccountResponse.toEntity(): Account {
-    return Account(
+fun AccountResponse.toEntity(): Account =
+    Account(
         id = id,
         accountNumber = accountNumber,
         availableBalance = availableBalance,
@@ -14,12 +14,11 @@ fun AccountResponse.toEntity(): Account {
         accountType = accountType,
         currencyCode = currency.code,
         clientFirstName = client.firstName,
-        clientLastName = client.lastName
+        clientLastName = client.lastName,
     )
-}
 
-fun Account.toUiModel(): AccountUIModel {
-    return AccountUIModel(
+fun Account.toUiModel(): AccountUIModel =
+    AccountUIModel(
         id = id,
         accountNumber = accountNumber,
         availableBalance = availableBalance,
@@ -27,6 +26,5 @@ fun Account.toUiModel(): AccountUIModel {
         expirationDate = expirationDate,
         accountType = accountType,
         currencyCode = currencyCode,
-        clientFullName = "$clientFirstName $clientLastName"
+        clientFullName = "$clientFirstName $clientLastName",
     )
-}

@@ -1,10 +1,9 @@
 package rs.raf.rafeisen.domain.employee.api.response
 
 import java.time.LocalDate
+import kotlinx.serialization.Serializable
 import rs.raf.rafeisen.domain.client.model.Gender
 import rs.raf.rafeisen.serialization.custom.LocalDateSerializer
-
-import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmployeeResponse(
@@ -20,5 +19,5 @@ data class EmployeeResponse(
     val username: String,
     val position: String,
     val department: String,
-    val active: Boolean
+    val active: Boolean,
 )

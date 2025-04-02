@@ -9,14 +9,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
+import javax.inject.Singleton
 import rs.raf.rafeisen.security.Encryption
 import rs.raf.rafeisen.serialization.store.CredentialsSerialization
 import rs.raf.rafeisen.serialization.store.StringSerializer
 import rs.raf.rafeisen.serialization.store.UserAccountsSerialization
 import rs.raf.rafeisen.store.Credential
 import rs.raf.rafeisen.store.UserAccount
-import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -46,9 +46,7 @@ object StoreModule {
     @Provides
     @Singleton
     @ActiveAccountDataStore
-    fun provideActiveAccountStore(
-        @ApplicationContext context: Context,
-    ): DataStore<String> =
+    fun provideActiveAccountStore(@ApplicationContext context: Context): DataStore<String> =
         DataStoreFactory.create(
             produceFile = { context.dataStoreFile("active_account.txt") },
             serializer = StringSerializer(),

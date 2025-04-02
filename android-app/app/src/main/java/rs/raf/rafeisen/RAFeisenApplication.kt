@@ -2,8 +2,8 @@ package rs.raf.rafeisen
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 @HiltAndroidApp
 class RAFeisenApplication : Application() {

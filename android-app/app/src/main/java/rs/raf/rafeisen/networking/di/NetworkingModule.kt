@@ -5,20 +5,20 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import rs.raf.rafeisen.auth.AuthApi
+import rs.raf.rafeisen.domain.account.api.AccountApi
+import rs.raf.rafeisen.domain.card.api.CardsApi
 import rs.raf.rafeisen.domain.client.api.ClientApi
 import rs.raf.rafeisen.networking.api.AuthClientServiceInternalRequests
 import rs.raf.rafeisen.networking.utils.buildAuthenticatedOkHttpClient
 import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.store.CredentialsStore
-import javax.inject.Singleton
-import rs.raf.rafeisen.domain.account.api.AccountApi
-import rs.raf.rafeisen.domain.card.api.CardsApi
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,9 +28,9 @@ object NetworkingModule {
     fun provideOkHttpClient(
         credentialsStore: CredentialsStore,
         activeAccountStore: ActiveAccountStore,
-        authClientServiceInternalRequests: AuthClientServiceInternalRequests
-    ): OkHttpClient {
-        return buildAuthenticatedOkHttpClient(
+        authClientServiceInternalRequests: AuthClientServiceInternalRequests,
+    ): OkHttpClient =
+        buildAuthenticatedOkHttpClient(
             credentialsStore = credentialsStore,
             activeAccountStore = activeAccountStore,
             authClientServiceInternalRequests = authClientServiceInternalRequests,
@@ -41,14 +41,10 @@ object NetworkingModule {
                 },
             )
         }
-    }
 
     @Singleton
     @Provides
-    fun provideAuthClientServiceInternalRequests(
-        apiInfo: ApiInfo,
-        appJson: Json,
-    ): AuthClientServiceInternalRequests =
+    fun provideAuthClientServiceInternalRequests(apiInfo: ApiInfo, appJson: Json): AuthClientServiceInternalRequests =
         Retrofit.Builder()
             .client(
                 OkHttpClient.Builder()
@@ -57,7 +53,7 @@ object NetworkingModule {
                             setLevel(HttpLoggingInterceptor.Level.BODY)
                         },
                     )
-                    .build()
+                    .build(),
             )
             .baseUrl(apiInfo.baseUrl)
             .addConverterFactory(appJson.asConverterFactory("application/json".toMediaType()))
@@ -82,31 +78,23 @@ object NetworkingModule {
             .baseUrl(apiInfo.baseUrl)
             .client(authenticatedOkHttpClient)
             .addConverterFactory(
-                appJson.asConverterFactory("application/json".toMediaType())
+                appJson.asConverterFactory("application/json".toMediaType()),
             )
             .build()
 
     @Singleton
     @Provides
-    fun provideAuthApi(
-        retrofit: Retrofit
-    ): AuthApi =
-        retrofit.create(AuthApi::class.java)
+    fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 
     @Singleton
     @Provides
-    fun provideClientApi(
-        retrofit: Retrofit
-    ): ClientApi =
-        retrofit.create(ClientApi::class.java)
+    fun provideClientApi(retrofit: Retrofit): ClientApi = retrofit.create(ClientApi::class.java)
 
     @Provides
     @Singleton
-    fun provideCardsApi(retrofit: Retrofit): CardsApi =
-        retrofit.create(CardsApi::class.java)
+    fun provideCardsApi(retrofit: Retrofit): CardsApi = retrofit.create(CardsApi::class.java)
 
     @Provides
     @Singleton
-    fun provideAccountApi(retrofit: Retrofit): AccountApi =
-        retrofit.create(AccountApi::class.java)
+    fun provideAccountApi(retrofit: Retrofit): AccountApi = retrofit.create(AccountApi::class.java)
 }

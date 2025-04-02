@@ -38,9 +38,10 @@ fun buildAuthenticatedOkHttpClient(
                 val code = response.body?.let {
                     errorDecoder.decodeFromStream<ErrorResponse>(it.byteStream()).code
                 }
-                if (code != "ExpiredJwt")
+                if (code != "ExpiredJwt") {
                     /* Some unrelated error.  */
                     return@authenticator null
+                }
             } catch (error: Throwable) {
                 return@authenticator null
             }
@@ -59,12 +60,17 @@ fun buildAuthenticatedOkHttpClient(
 
                 val currentAuthKey = currentUserCreds.accessToken
                 if (response.request.headers["Authorization"]
-                        ?.removePrefixIgnoreCase("bearer ") != currentAuthKey)
+                        ?.removePrefixIgnoreCase("bearer ") != currentAuthKey
+                ) {
                     /* Someone else did the refresh.  */
                     currentAuthKey
-                else {
+                } else {
                     val newToken = authClientServiceInternalRequests
-                        .refreshToken(AuthClientServiceInternalRequests.TokenRefreshRequest(refreshToken = currentUserCreds.refreshToken))
+                        .refreshToken(
+                            AuthClientServiceInternalRequests.TokenRefreshRequest(
+                                refreshToken = currentUserCreds.refreshToken,
+                            ),
+                        )
                         .execute()
                         .body()
                         ?.accessToken
@@ -87,9 +93,9 @@ fun buildAuthenticatedOkHttpClient(
             /* Add an Authorization header if one does not exist.  */
             val req = chain.request()
             chain.proceed(
-                if (req.headers["Authorization"] != null)
+                if (req.headers["Authorization"] != null) {
                     req
-                else
+                } else {
                     synchronized(syncKey) {
                         runBlocking {
                             val userId = activeAccountStore.activeUserId()
@@ -97,7 +103,7 @@ fun buildAuthenticatedOkHttpClient(
                                 req.newBuilder()
                                     .header(
                                         "Authorization",
-                                        "Bearer ${credentialsStore.findOrThrow(userId).accessToken}"
+                                        "Bearer ${credentialsStore.findOrThrow(userId).accessToken}",
                                     )
                                     .build()
                             } catch (_: Throwable) {
@@ -105,9 +111,9 @@ fun buildAuthenticatedOkHttpClient(
                             }
                         }
                     }
+                },
             )
         }
         .run(furtherConfig)
         .build()
 }
-

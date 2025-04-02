@@ -1,16 +1,13 @@
 package rs.raf.rafeisen.security
 
 import androidx.datastore.core.CorruptionException
+import java.io.InputStream
+import java.io.OutputStream
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import timber.log.Timber
-import java.io.InputStream
-import java.io.OutputStream
 
-inline fun <reified T> InputStream.readDecrypted(
-    json: Json,
-    encryption: Encryption,
-): T {
+inline fun <reified T> InputStream.readDecrypted(json: Json, encryption: Encryption): T {
     val decryptedJson = encryption.decrypt(this)
     return try {
         json.decodeFromString(decryptedJson)
