@@ -22,44 +22,45 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AppDrawer(
-    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     onDrawerDestinationClick: (DrawerScreenDestination) -> Unit,
+    modifier: Modifier = Modifier,
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     viewModel: AppDrawerViewModel = hiltViewModel(),
     content: @Composable () -> Unit,
 ) {
     val uiScope = rememberCoroutineScope()
-
     val uiState = viewModel.state.collectAsState()
 
     BackHandler(enabled = drawerState.isOpen) {
         uiScope.launch { drawerState.close() }
     }
 
-    AppDrawer(
+    AppDrawerInternal(
         drawerState = drawerState,
+        state = uiState.value,
         onDrawerDestinationClick = {
             uiScope.launch { drawerState.close() }
             onDrawerDestinationClick(it)
         },
+        modifier = modifier,
         content = content,
-        state = uiState.value,
     )
 }
 
 @Composable
-private fun AppDrawer(
+private fun AppDrawerInternal(
     drawerState: DrawerState,
     state: AppDrawerContract.UiState,
     onDrawerDestinationClick: (DrawerScreenDestination) -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     ModalNavigationDrawer(
         drawerState = drawerState,
+        modifier = modifier,
         drawerContent = {
             ModalDrawerSheet {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                ) {
+                Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = state.activeAccount.fullName(),
                         style = MaterialTheme.typography.bodyLarge,
@@ -86,13 +87,16 @@ private fun AppDrawer(
 fun NavigationDrawerItems(
     menuItems: List<DrawerScreenDestination>,
     onDrawerDestinationClick: (DrawerScreenDestination) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    menuItems.map {
-        NavigationDrawerItem(
-            label = { Text(text = it.label()) },
-            selected = false,
-            onClick = { onDrawerDestinationClick(it) },
-        )
+    Column(modifier = modifier) {
+        menuItems.forEach {
+            NavigationDrawerItem(
+                label = { Text(text = it.label()) },
+                selected = false,
+                onClick = { onDrawerDestinationClick(it) },
+            )
+        }
     }
 }
 
