@@ -24,7 +24,6 @@ import rs.raf.rafeisen.screen.home.model.QuickAccessUi
 import rs.raf.rafeisen.ui.theme.GreenStart
 import rs.raf.rafeisen.ui.theme.OrangeStart
 
-
 @Composable
 fun QuickAccessColumn() {
     val quickAccessUiLists = makeQuickAccessUiList()
@@ -81,19 +80,20 @@ fun QuickAccessItem(quickAccessUi: QuickAccessUi) {
     }
 }
 
-private fun makeQuickAccessUiList() = listOf(
-    QuickAccessUi(
-        icon = Icons.AutoMirrored.Rounded.StarHalf,
-        name = "My Contacts",
-        background = OrangeStart,
-    ),
+private fun makeQuickAccessUiList() =
+    listOf(
+        QuickAccessUi(
+            icon = Icons.AutoMirrored.Rounded.StarHalf,
+            name = "My Contacts",
+            background = OrangeStart,
+        ),
 
-    QuickAccessUi(
-        icon = Icons.Rounded.MonetizationOn,
-        name = "My Transactions",
-        background = GreenStart,
-    ),
-)
+        QuickAccessUi(
+            icon = Icons.Rounded.MonetizationOn,
+            name = "My Transactions",
+            background = GreenStart,
+        ),
+    )
 
 @Preview(showBackground = true)
 @Composable
