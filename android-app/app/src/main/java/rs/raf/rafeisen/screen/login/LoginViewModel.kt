@@ -3,6 +3,7 @@ package rs.raf.rafeisen.screen.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +16,10 @@ import rs.raf.rafeisen.screen.login.LoginContract.SideEffect
 import rs.raf.rafeisen.screen.login.LoginContract.UiEvent
 import rs.raf.rafeisen.screen.login.LoginContract.UiState
 import timber.log.Timber
-import javax.inject.Inject
-import rs.raf.rafeisen.screen.landing.db.UserDataCleaner
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authService: AuthService,
-    private val userDataCleaner: UserDataCleaner
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
@@ -51,7 +49,6 @@ class LoginViewModel @Inject constructor(
     private fun login(email: String, password: String) =
         viewModelScope.launch {
             try {
-                userDataCleaner.clearUserData()
                 setState { copy(isWorking = true) }
                 authService.login(email = email, password = password)
                 setEffect(SideEffect.LoginSuccessful)

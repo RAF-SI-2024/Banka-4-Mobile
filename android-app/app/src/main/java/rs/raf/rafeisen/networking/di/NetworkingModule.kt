@@ -10,15 +10,15 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import rs.raf.rafeisen.api.auth.AuthApi
-import rs.raf.rafeisen.api.client.ClientApi
+import rs.raf.rafeisen.auth.AuthApi
+import rs.raf.rafeisen.domain.client.api.ClientApi
 import rs.raf.rafeisen.networking.api.AuthClientServiceInternalRequests
 import rs.raf.rafeisen.networking.utils.buildAuthenticatedOkHttpClient
 import rs.raf.rafeisen.store.ActiveAccountStore
 import rs.raf.rafeisen.store.CredentialsStore
 import javax.inject.Singleton
-import rs.raf.rafeisen.api.account.AccountApi
-import rs.raf.rafeisen.api.card.CardsApi
+import rs.raf.rafeisen.domain.account.api.AccountApi
+import rs.raf.rafeisen.domain.card.api.CardsApi
 
 @Module
 @InstallIn(SingletonComponent::class)
