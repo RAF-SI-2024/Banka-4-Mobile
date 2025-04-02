@@ -15,8 +15,8 @@ fun CardResponse.toEntity(): Card =
         limit = limit,
         cardStatus = cardStatus,
         accountNumber = accountNumber,
-        clientFirstName = client?.firstName ?: authorizedUser?.firstName,
-        clientLastName = client?.lastName ?: authorizedUser?.lastName,
+        clientFirstName = client?.firstName ?: authorizedUserDto?.firstName,
+        clientLastName = client?.lastName ?: authorizedUserDto?.lastName,
     )
 
 fun Card.toUiModel(): CardUIModel =
