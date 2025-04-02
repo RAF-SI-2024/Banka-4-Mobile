@@ -50,7 +50,7 @@ class LoginViewModel @Inject constructor(private val authService: AuthService) :
                 setState { copy(isWorking = true) }
                 authService.login(email = email, password = password)
                 setEffect(SideEffect.LoginSuccessful)
-            } catch (error: Exception) {
+            } catch (error: RuntimeException) {
                 /* TODO: implement better error handling logic */
                 Timber.w(error)
             } finally {

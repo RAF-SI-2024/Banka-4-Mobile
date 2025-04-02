@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.StarHalf
 import androidx.compose.material.icons.rounded.MonetizationOn
-import androidx.compose.material.icons.rounded.StarHalf
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,31 +20,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import rs.raf.rafeisen.screen.home.model.QuickAccessUi
 import rs.raf.rafeisen.ui.theme.GreenStart
 import rs.raf.rafeisen.ui.theme.OrangeStart
 
-data class QuickAccess(
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
-    val name: String,
-    val background: Color,
-)
-
-val quickAccessList = listOf(
-    QuickAccess(
-        icon = Icons.Rounded.StarHalf,
-        name = "My Contacts",
-        background = OrangeStart,
-    ),
-
-    QuickAccess(
-        icon = Icons.Rounded.MonetizationOn,
-        name = "My Transactions",
-        background = GreenStart,
-    ),
-)
 
 @Composable
 fun QuickAccessColumn() {
+    val quickAccessUiLists = makeQuickAccessUiList()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -59,17 +43,17 @@ fun QuickAccessColumn() {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(
-                items = quickAccessList,
+                items = quickAccessUiLists,
                 key = { it.name },
             ) { quickAccess ->
-                QuickAccessItem(quickAccess = quickAccess)
+                QuickAccessItem(quickAccessUi = quickAccess)
             }
         }
     }
 }
 
 @Composable
-fun QuickAccessItem(quickAccess: QuickAccess) {
+fun QuickAccessItem(quickAccessUi: QuickAccessUi) {
     Column(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
@@ -80,22 +64,36 @@ fun QuickAccessItem(quickAccess: QuickAccess) {
         Box(
             modifier = Modifier
                 .clip(MaterialTheme.shapes.medium)
-                .background(quickAccess.background)
+                .background(quickAccessUi.background)
                 .padding(4.dp),
         ) {
             Icon(
-                imageVector = quickAccess.icon,
-                contentDescription = quickAccess.name,
+                imageVector = quickAccessUi.icon,
+                contentDescription = quickAccessUi.name,
                 tint = Color.White,
             )
         }
         Text(
-            text = quickAccess.name,
+            text = quickAccessUi.name,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }
+
+private fun makeQuickAccessUiList() = listOf(
+    QuickAccessUi(
+        icon = Icons.AutoMirrored.Rounded.StarHalf,
+        name = "My Contacts",
+        background = OrangeStart,
+    ),
+
+    QuickAccessUi(
+        icon = Icons.Rounded.MonetizationOn,
+        name = "My Transactions",
+        background = GreenStart,
+    ),
+)
 
 @Preview(showBackground = true)
 @Composable

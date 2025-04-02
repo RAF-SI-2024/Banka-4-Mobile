@@ -51,7 +51,6 @@ fun AppNavigation(startDestination: String) {
     ) {
         home(
             route = "home",
-            navController = navController,
             onDrawerScreenDestination = drawerDestinationHandler,
             onBottomBarDestination = bottomBarDestinationHandler,
         )
@@ -93,7 +92,6 @@ fun AppNavigation(startDestination: String) {
 
 private fun NavGraphBuilder.home(
     route: String,
-    navController: NavController,
     onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
     onBottomBarDestination: (BottomNavigationDestination) -> Unit,
 ) = composable(route = route) {

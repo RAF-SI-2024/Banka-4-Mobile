@@ -9,9 +9,14 @@ style:
   MagicNumber:
     ignorePropertyDeclaration: true
     ignoreCompanionObjectPropertyDeclaration: true
-
+  ForbiddenComment:
+    active: false
   UnusedPrivateMember:
     ignoreAnnotated: ['Preview']
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
 
 complexity:
   LongMethod:

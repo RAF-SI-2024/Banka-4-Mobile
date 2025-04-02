@@ -1,4 +1,4 @@
-package rs.raf.rafeisen.domain.authorized_user.api.response
+package rs.raf.rafeisen.domain.authorizedUser.api.response
 
 import java.time.LocalDate
 import kotlinx.serialization.Serializable
