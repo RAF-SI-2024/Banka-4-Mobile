@@ -35,7 +35,7 @@ fun AppDrawer(
         uiScope.launch { drawerState.close() }
     }
 
-    AppDrawerInternal(
+    AppDrawer(
         drawerState = drawerState,
         state = uiState.value,
         onDrawerDestinationClick = {
@@ -48,7 +48,7 @@ fun AppDrawer(
 }
 
 @Composable
-private fun AppDrawerInternal(
+private fun AppDrawer(
     drawerState: DrawerState,
     state: AppDrawerContract.UiState,
     onDrawerDestinationClick: (DrawerScreenDestination) -> Unit,
