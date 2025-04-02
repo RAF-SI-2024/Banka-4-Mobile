@@ -6,7 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
-import rs.raf.rafeisen.api.client.response.ClientMeResponse
+import rs.raf.rafeisen.domain.client.api.response.ClientResponse
 
 /** Retrofit interface for requests used by the authentication service and client.
  *  These are hand-authenticated, because otherwise we'd have a cycle.
@@ -23,5 +23,5 @@ interface AuthClientServiceInternalRequests {
     fun refreshToken(@Body tokenRefreshRequest: TokenRefreshRequest): Call<TokenRefreshResponse>
 
     @GET("/client/me")
-    suspend fun getClientMe(@Header("Authorization") authorization: String): ClientMeResponse
+    suspend fun getClientMe(@Header("Authorization") authorization: String): ClientResponse
 }

@@ -10,9 +10,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import rs.raf.rafeisen.security.Encryption
-import rs.raf.rafeisen.serialization.CredentialsSerialization
-import rs.raf.rafeisen.serialization.StringSerializer
-import rs.raf.rafeisen.serialization.UserAccountsSerialization
+import rs.raf.rafeisen.serialization.store.CredentialsSerialization
+import rs.raf.rafeisen.serialization.store.StringSerializer
+import rs.raf.rafeisen.serialization.store.UserAccountsSerialization
 import rs.raf.rafeisen.store.Credential
 import rs.raf.rafeisen.store.UserAccount
 import javax.inject.Qualifier

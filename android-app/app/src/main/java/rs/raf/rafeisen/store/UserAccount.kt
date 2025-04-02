@@ -1,7 +1,7 @@
 package rs.raf.rafeisen.store
 
 import kotlinx.serialization.Serializable
-import rs.raf.rafeisen.model.Gender
+import rs.raf.rafeisen.domain.client.model.Gender
 
 @Serializable
 data class UserAccount(

@@ -1,8 +1,8 @@
 package rs.raf.rafeisen.auth
 
 import kotlinx.coroutines.withContext
-import rs.raf.rafeisen.api.auth.AuthApi
-import rs.raf.rafeisen.api.auth.request.LoginRequest
+import rs.raf.rafeisen.auth.AuthApi
+import rs.raf.rafeisen.auth.request.LoginRequest
 import rs.raf.rafeisen.coroutines.CoroutineDispatcherProvider
 import rs.raf.rafeisen.networking.api.AuthClientServiceInternalRequests
 import rs.raf.rafeisen.store.AccountsStore

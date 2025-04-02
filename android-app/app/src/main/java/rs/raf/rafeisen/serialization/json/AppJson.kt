@@ -1,6 +1,5 @@
 package rs.raf.rafeisen.serialization.json
 
-
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
@@ -8,6 +7,7 @@ val AppJson =
     Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
+        explicitNulls = false
     }
 
 inline fun <reified T> Json.decodeFromStringOrNull(string: String?): T? {

@@ -1,202 +1,87 @@
 package rs.raf.rafeisen.screen.home
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import rs.raf.rafeisen.drawer.AppDrawerScaffold
+import rs.raf.rafeisen.core.ui.ErrorScreen
+import rs.raf.rafeisen.core.ui.LoadingSpinner
+import rs.raf.rafeisen.core.ui.NavigationScaffold
 import rs.raf.rafeisen.drawer.DrawerScreenDestination
-import rs.raf.rafeisen.totp.model.TotpUiModel
-import java.time.Instant
-import kotlin.time.Duration.Companion.seconds
+import rs.raf.rafeisen.screen.home.ui.AccountBalanceSection
+import rs.raf.rafeisen.screen.home.ui.BottomNavigationDestination
+import rs.raf.rafeisen.screen.home.ui.CardSection
+import rs.raf.rafeisen.screen.home.ui.QuickAccessColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
     onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
-    onAddTotpClick: () -> Unit,
+    onBottomBarDestinationClick: (BottomNavigationDestination) -> Unit,
 ) {
-    val uiState = viewModel.state.collectAsState()
+    val state = viewModel.state.collectAsState()
 
     HomeScreen(
+        state = state.value,
+        eventPublisher = viewModel::setEvent,
         onDrawerScreenDestinationClick = onDrawerScreenDestinationClick,
-        onAddTotpClick = onAddTotpClick,
-        state = uiState.value,
+        onBottomBarDestinationClick = onBottomBarDestinationClick,
     )
 }
 
 @ExperimentalMaterial3Api
 @Composable
-private fun HomeScreen(
-    onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
-    onAddTotpClick: () -> Unit,
+fun HomeScreen(
     state: HomeContract.UiState,
+    eventPublisher: (HomeContract.UiEvent) -> Unit,
+    onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
+    onBottomBarDestinationClick: (BottomNavigationDestination) -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    var currentProgress by remember { mutableFloatStateOf(1f) }
 
-    LaunchedEffect(Unit) {
-        launch {
-            while (true) {
-                delay(1.seconds)
-                val timestamp = Instant.now().epochSecond
-                currentProgress = 1f - ((timestamp % 30) / 29f)
-            }
-        }
-    }
-
-
-    AppDrawerScaffold(
+    NavigationScaffold(
         drawerState = drawerState,
-        onDrawerScreenDestinationClick = onDrawerScreenDestinationClick,
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddTotpClick,
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            }
-        },
-        topBar = { HomeTopAppBar(drawerState = drawerState) },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
-            ) {
-                if (state.totpCodes.isEmpty() && state.isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 24.dp),
-                        contentAlignment = Alignment.Center,
+        onDrawerDestinationClick = onDrawerScreenDestinationClick,
+        onBottomBarDestinationClick = onBottomBarDestinationClick,
+        topBarTitleText = "Overview",
+        selectedBottomBarDestination = BottomNavigationDestination.Home,
+    ) { paddingValues ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+        ) {
+            when {
+                state.isLoading -> LoadingSpinner(modifier = Modifier.fillMaxSize())
+
+                state.error != null -> ErrorScreen(
+                    message = "Something went wrong. Please try again.",
+                    onRetry = { eventPublisher(HomeContract.UiEvent.LoadAccountAndCardsData) },
+                )
+                /* TODO: handle no accounts state. */
+                else -> {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        CircularProgressIndicator()
-                    }
-                } else if (state.totpCodes.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 24.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(text = "You don't have any codes yet.")
-                    }
-                } else {
-                    state.totpCodes.forEach { (_, totp) ->
-                        CodeCard(
-                            progress = currentProgress,
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            totp = totp,
-                        )
+                        if (state.accounts.isNotEmpty()) {
+                            AccountBalanceSection(accounts = state.accounts)
+                        }
+                        CardSection(cards = state.cards)
+                        QuickAccessColumn()
                     }
                 }
             }
         }
-    )
-}
-
-@Composable
-private fun CodeCard(
-    modifier: Modifier = Modifier,
-    totp: TotpUiModel,
-    progress: Float,
-) {
-    val clipboardManager = LocalClipboardManager.current
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(12.dp),
-            )
-            .clickable {
-                clipboardManager.setText(
-                    annotatedString = buildAnnotatedString { append(totp.code) },
-                )
-            }
-            .padding(vertical = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = totp.issuer,
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        Text(
-            text = totp.code,
-            style = MaterialTheme.typography.displayMedium,
-        )
-        LinearProgressIndicator(
-            progress = { progress },
-        )
     }
-}
-
-@ExperimentalMaterial3Api
-
-@Composable
-private fun HomeTopAppBar(
-    drawerState: DrawerState
-) {
-    val uiScope = rememberCoroutineScope()
-
-    CenterAlignedTopAppBar(
-        title = { Text(text = "Home") },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    uiScope.launch {
-                        if (drawerState.isOpen) {
-                            drawerState.close()
-                        } else {
-                            drawerState.open()
-                        }
-                    }
-                },
-            ) {
-                Icon(imageVector = Icons.Default.Menu, contentDescription = null)
-            }
-        }
-    )
 }

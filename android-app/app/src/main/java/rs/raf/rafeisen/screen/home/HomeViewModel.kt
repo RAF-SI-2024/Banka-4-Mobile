@@ -3,85 +3,93 @@ package rs.raf.rafeisen.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.turingcomplete.kotlinonetimepassword.GoogleAuthenticator
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import rs.raf.rafeisen.domain.account.repository.AccountRepository
+import rs.raf.rafeisen.domain.card.repository.CardRepository
+import rs.raf.rafeisen.mappers.toUiModel
+import rs.raf.rafeisen.screen.home.HomeContract.UiEvent
 import rs.raf.rafeisen.screen.home.HomeContract.UiState
-import rs.raf.rafeisen.store.ActiveAccountStore
-import rs.raf.rafeisen.totp.model.TotpUiModel
-import rs.raf.rafeisen.totp.repository.TotpRepository
-import java.util.Date
-import java.util.Timer
-import java.util.TimerTask
-import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
+import timber.log.Timber
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val totpRepository: TotpRepository,
-    private val activeAccountStore: ActiveAccountStore,
+    private val cardRepository: CardRepository,
+    private val accountRepository: AccountRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
     val state = _state.asStateFlow()
     private fun setState(reducer: UiState.() -> UiState) = _state.getAndUpdate { it.reducer() }
 
-    private val jobs = mutableMapOf<String, Job>()
-
+    private val events: MutableSharedFlow<UiEvent> = MutableSharedFlow()
+    fun setEvent(event: UiEvent) = viewModelScope.launch { events.emit(event) }
 
     init {
-        observeTotpCodes()
+        observeEvents()
+        fetchCards()
+        fetchAccounts()
+        observeCards()
+        observeAccounts()
     }
 
-    private fun observeTotpCodes() =
+    private fun observeEvents() {
         viewModelScope.launch {
-            totpRepository
-                .observeAllByUserId(userId = activeAccountStore.activeUserId())
-                .apply { setState { copy(isLoading = true) } }
-                .onEach { items ->
-                    jobs.values.forEach { it.cancel() }
-                    jobs.clear()
-
-                    items.forEach { item ->
-                        val job = viewModelScope.launch {
-                            while (true) {
-                                val timestamp = Date(System.currentTimeMillis())
-                                val code = GoogleAuthenticator(item.secret.toByteArray())
-                                    .generate(timestamp)
-
-                                setState {
-                                    copy(
-                                        totpCodes = totpCodes + (item.secret to TotpUiModel(
-                                            code = code,
-                                            issuer = item.issuer,
-                                        ))
-                                    )
-                                }
-
-                                delay(1.seconds)
-
-                            }
-                        }
-
-                        jobs[item.secret] = job
+            events.collect { event ->
+                when (event) {
+                    is UiEvent.LoadAccountAndCardsData -> {
+                        fetchCards()
+                        fetchAccounts()
                     }
                 }
-                .apply { setState { copy(isLoading = false) } }
-                .launchIn(viewModelScope)
+            }
         }
+    }
 
-    private fun startTimer(secret: String) =
+    private fun observeCards() {
         viewModelScope.launch {
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                }
-            }, 0, 1000)
+            cardRepository.observeCards().collect { cards ->
+                setState { copy(cards = cards.map { it.toUiModel() }) }
+            }
+        }
+    }
+
+    private fun observeAccounts() {
+        viewModelScope.launch {
+            accountRepository.observeAccounts().collect { accounts ->
+                setState { copy(accounts = accounts.map { it.toUiModel() }) }
+            }
+        }
+    }
+
+    private fun fetchCards() =
+        viewModelScope.launch {
+            setState { copy(isLoading = true, error = null) }
+            try {
+                cardRepository.fetchCards()
+            } catch (e: Exception) {
+                Timber.w(e)
+                setState { copy(error = e) }
+            } finally {
+                setState { copy(isLoading = false) }
+            }
         }
 
+    private fun fetchAccounts() {
+        viewModelScope.launch {
+            setState { copy(isLoading = true, error = null) }
+            try {
+                accountRepository.fetchAccounts()
+            } catch (e: Exception) {
+                Timber.w(e)
+                setState { copy(error = e) }
+            } finally {
+                setState { copy(isLoading = false) }
+            }
+        }
+    }
 }
