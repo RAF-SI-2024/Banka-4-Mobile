@@ -14,6 +14,7 @@ plugins {
 
 buildscript {
     dependencies {
+        classpath(libs.ktlint.compose.rules)
         classpath(libs.hilt.android.gradle.plugin)
     }
 }
