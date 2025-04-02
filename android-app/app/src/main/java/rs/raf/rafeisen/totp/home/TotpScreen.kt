@@ -12,15 +12,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +41,8 @@ import rs.raf.rafeisen.core.ui.NavigationScaffold
 import rs.raf.rafeisen.drawer.DrawerScreenDestination
 import rs.raf.rafeisen.screen.home.ui.BottomNavigationDestination
 import rs.raf.rafeisen.totp.model.TotpUiModel
+
+private const val TOTP_DURATION = 30f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,7 +78,7 @@ private fun TotpScreen(
             while (true) {
                 delay(1.seconds)
                 val timestamp = Instant.now().epochSecond
-                currentProgress = 1f - ((timestamp % 30) / 29f)
+                currentProgress = 1f - ((timestamp % TOTP_DURATION.toInt()) / (TOTP_DURATION - 1))
             }
         }
     }
@@ -175,29 +172,4 @@ private fun CodeCard(
             progress = { progress },
         )
     }
-}
-
-@ExperimentalMaterial3Api
-@Composable
-private fun HomeTopAppBar(drawerState: DrawerState) {
-    val uiScope = rememberCoroutineScope()
-
-    CenterAlignedTopAppBar(
-        title = { Text(text = "Home") },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    uiScope.launch {
-                        if (drawerState.isOpen) {
-                            drawerState.close()
-                        } else {
-                            drawerState.open()
-                        }
-                    }
-                },
-            ) {
-                Icon(imageVector = Icons.Default.Menu, contentDescription = null)
-            }
-        },
-    )
 }

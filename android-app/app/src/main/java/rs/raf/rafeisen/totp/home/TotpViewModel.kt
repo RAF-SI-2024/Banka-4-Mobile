@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.turingcomplete.kotlinonetimepassword.GoogleAuthenticator
-import java.util.Date
-import java.util.Timer
-import java.util.TimerTask
+import java.util.*
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Job
@@ -74,17 +72,5 @@ class TotpViewModel @Inject constructor(
                 }
                 .apply { setState { copy(isLoading = false) } }
                 .launchIn(viewModelScope)
-        }
-
-    private fun startTimer(secret: String) =
-        viewModelScope.launch {
-            Timer().schedule(
-                object : TimerTask() {
-                    override fun run() {
-                    }
-                },
-                0,
-                1000,
-            )
         }
 }

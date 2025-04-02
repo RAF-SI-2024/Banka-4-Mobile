@@ -3,6 +3,7 @@ package rs.raf.rafeisen.networking.utils
 import android.util.Pair
 import androidx.core.util.component1
 import androidx.core.util.component2
+import java.net.HttpURLConnection
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -33,16 +34,13 @@ fun buildAuthenticatedOkHttpClient(
     return OkHttpClient.Builder()
         .authenticator { _, response ->
             /* Try to figure out if this is something we can retry.  */
-            if (response.code != 401) return@authenticator null
-            try {
-                val code = response.body?.let {
-                    errorDecoder.decodeFromStream<ErrorResponse>(it.byteStream()).code
-                }
-                if (code != "ExpiredJwt") {
-                    /* Some unrelated error.  */
-                    return@authenticator null
-                }
-            } catch (error: Throwable) {
+            if (response.code != HttpURLConnection.HTTP_UNAUTHORIZED) return@authenticator null
+            val code = runCatching {
+                response.body?.let { errorDecoder.decodeFromStream<ErrorResponse>(it.byteStream()).code }
+            }.getOrNull() ?: return@authenticator null
+
+            if (code != "ExpiredJwt") {
+                /* Some unrelated error.  */
                 return@authenticator null
             }
 
@@ -53,7 +51,7 @@ fun buildAuthenticatedOkHttpClient(
                             val myUserId = activeAccountStore.activeUserId()
                             Pair(credentialsStore.findOrThrow(myUserId), myUserId)
                         }
-                    } catch (_: Throwable) {
+                    } catch (_: IllegalArgumentException) {
                         /* Got logged out?  */
                         return@authenticator null
                     }
@@ -74,9 +72,9 @@ fun buildAuthenticatedOkHttpClient(
                         .execute()
                         .body()
                         ?.accessToken
-                        /* I hate Java.  This happens because there's no way to propagate
-                           non-nullability through Retrofit Call<>. */
-                        ?: throw RuntimeException("Access token refresh failed in an impossible matter?")
+                    /* I hate Java.  This happens because there's no way to propagate
+                       non-nullability through Retrofit Call<>. */
+                        ?: error("Access token refresh failed in an impossible matter?")
                     runBlocking {
                         credentialsStore.updateAccessToken(myUserId, newToken)
                     }
@@ -106,7 +104,7 @@ fun buildAuthenticatedOkHttpClient(
                                         "Bearer ${credentialsStore.findOrThrow(userId).accessToken}",
                                     )
                                     .build()
-                            } catch (_: Throwable) {
+                            } catch (_: IllegalArgumentException) {
                                 req
                             }
                         }
