@@ -5,15 +5,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class CardName {
-    @SerialName("Visa")
+    @SerialName("VISA")
     Visa,
 
-    @SerialName("MasterCard")
+    @SerialName("MASTER_CARD")
     MasterCard,
 
-    @SerialName("DinaCard")
+    @SerialName("DINA_CARD")
     DinaCard,
 
-    @SerialName("American Express")
+    @SerialName("AMERICAN_EXPRESS")
     AmericanExpress,
 }

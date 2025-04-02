@@ -26,5 +26,5 @@ data class CardResponse(
     val cardStatus: CardStatus,
     val accountNumber: String,
     val client: ClientResponse?,
-    val authorizedUser: AuthorizedUserResponse?,
+    val authorizedUserDto: AuthorizedUserResponse?,
 )
