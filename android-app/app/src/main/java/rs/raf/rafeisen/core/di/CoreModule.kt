@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.ElementsIntoSet
+import dagger.multibindings.IntoSet
 import timber.log.Timber
 
 @Module
@@ -12,6 +12,6 @@ import timber.log.Timber
 object CoreModule {
     // Logging
     @Provides
-    @ElementsIntoSet
-    fun emptyLoggersSet(): Set<Timber.Tree> = emptySet()
+    @IntoSet
+    fun timberLogger(): Timber.Tree = Timber.DebugTree()
 }
