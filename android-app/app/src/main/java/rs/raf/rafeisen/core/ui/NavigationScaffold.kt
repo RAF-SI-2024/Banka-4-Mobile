@@ -15,9 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.launch
@@ -29,12 +27,12 @@ import rs.raf.rafeisen.screen.home.ui.BottomNavigationDestination
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationScaffold(
-    modifier: Modifier = Modifier,
-    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     topBarTitleText: String,
     selectedBottomBarDestination: BottomNavigationDestination,
     onDrawerDestinationClick: (DrawerScreenDestination) -> Unit,
     onBottomBarDestinationClick: (BottomNavigationDestination) -> Unit,
+    modifier: Modifier = Modifier,
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     snackbarHost: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
