@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun BottomNavigationBar(
     selectedItem: BottomNavigationDestination,
-    modifier: Modifier = Modifier,
     onDestinationChange: (BottomNavigationDestination) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val bottomNavItems = listOf(
         BottomNavigationDestination.Home,
