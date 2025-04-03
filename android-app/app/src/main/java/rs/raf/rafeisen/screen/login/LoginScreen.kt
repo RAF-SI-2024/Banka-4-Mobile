@@ -24,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,12 +41,13 @@ import rs.raf.rafeisen.R
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, onNavigateToHome: () -> Unit) {
     val uiState = viewModel.state.collectAsState()
+    val currentOnNavigateToHome by rememberUpdatedState(onNavigateToHome)
 
     LaunchedEffect(viewModel, viewModel.effects) {
         launch {
             viewModel.effects.collect {
                 when (it) {
-                    LoginContract.SideEffect.LoginSuccessful -> onNavigateToHome()
+                    LoginContract.SideEffect.LoginSuccessful -> currentOnNavigateToHome()
                 }
             }
         }
@@ -97,8 +99,8 @@ private fun LoginScreen(state: LoginContract.UiState, eventPublisher: (LoginCont
             LoginForm(
                 email = email,
                 password = password,
-                onEmailChanged = { email = it },
-                onPasswordChanged = { password = it },
+                onEmailChange = { email = it },
+                onPasswordChange = { password = it },
             )
         }
     }
@@ -106,8 +108,8 @@ private fun LoginScreen(state: LoginContract.UiState, eventPublisher: (LoginCont
 
 @Composable
 private fun LoginScreenBottomBar(
-    modifier: Modifier = Modifier,
     disabled: Boolean,
+    modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
 ) {
     Button(
@@ -131,8 +133,8 @@ private fun LoginScreenBottomBar(
 private fun LoginForm(
     email: String,
     password: String,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -147,7 +149,7 @@ private fun LoginForm(
 
         OutlinedTextField(
             value = email,
-            onValueChange = onEmailChanged,
+            onValueChange = onEmailChange,
             label = { Text("Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier.fillMaxWidth(),
@@ -156,7 +158,7 @@ private fun LoginForm(
 
         OutlinedTextField(
             value = password,
-            onValueChange = onPasswordChanged,
+            onValueChange = onPasswordChange,
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
