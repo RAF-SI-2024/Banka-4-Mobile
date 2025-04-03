@@ -22,8 +22,14 @@ import rs.raf.rafeisen.screen.home.model.AccountUIModel
 import rs.raf.rafeisen.utils.formatAmount
 
 @Composable
-fun AccountBalanceSection(accounts: List<AccountUIModel>) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+fun AccountBalanceSection(
+    accounts: List<AccountUIModel>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Text(
             text = "Account Information",
             style = MaterialTheme.typography.titleMedium,
@@ -42,9 +48,12 @@ fun AccountBalanceSection(accounts: List<AccountUIModel>) {
 }
 
 @Composable
-fun AccountBalanceCard(account: AccountUIModel) {
+fun AccountBalanceCard(
+    account: AccountUIModel,
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .width(280.dp)
             .height(IntrinsicSize.Min),
         shape = MaterialTheme.shapes.large,
