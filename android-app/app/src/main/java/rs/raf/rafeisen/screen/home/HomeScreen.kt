@@ -45,7 +45,7 @@ fun HomeScreen(
     eventPublisher: (HomeContract.UiEvent) -> Unit,
     onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
     onBottomBarDestinationClick: (BottomNavigationDestination) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
