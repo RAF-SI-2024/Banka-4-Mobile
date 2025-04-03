@@ -45,6 +45,7 @@ fun HomeScreen(
     eventPublisher: (HomeContract.UiEvent) -> Unit,
     onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
     onBottomBarDestinationClick: (BottomNavigationDestination) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -56,7 +57,7 @@ fun HomeScreen(
         selectedBottomBarDestination = BottomNavigationDestination.Home,
     ) { paddingValues ->
         Surface(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
