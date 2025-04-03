@@ -25,10 +25,11 @@ import rs.raf.rafeisen.ui.theme.GreenStart
 import rs.raf.rafeisen.ui.theme.OrangeStart
 
 @Composable
-fun QuickAccessColumn() {
+fun QuickAccessColumn(modifier: Modifier = Modifier) {
     val quickAccessUiLists = makeQuickAccessUiList()
 
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
@@ -52,9 +53,12 @@ fun QuickAccessColumn() {
 }
 
 @Composable
-fun QuickAccessItem(quickAccessUi: QuickAccessUi) {
+fun QuickAccessItem(
+    quickAccessUi: QuickAccessUi,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(16.dp),
