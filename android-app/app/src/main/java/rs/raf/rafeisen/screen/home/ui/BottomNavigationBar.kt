@@ -10,24 +10,26 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun BottomNavigationBar(
+    modifier: Modifier = Modifier,
     selectedItem: BottomNavigationDestination,
-    onDestinationChanged: (BottomNavigationDestination) -> Unit,
+    onDestinationChange: (BottomNavigationDestination) -> Unit,
 ) {
     val bottomNavItems = listOf(
         BottomNavigationDestination.Home,
         BottomNavigationDestination.Totp,
         BottomNavigationDestination.Profile,
     )
-    NavigationBar {
+    NavigationBar(modifier = modifier) {
         bottomNavItems.forEach { item ->
             NavigationBarItem(
                 selected = item == selectedItem,
-                onClick = { onDestinationChanged(item) },
+                onClick = { onDestinationChange(item) },
                 icon = {
                     Icon(
                         imageVector = item.toIcon(),
@@ -72,6 +74,6 @@ sealed class BottomNavigationDestination {
 private fun PreviewBottomNavigationBar() {
     BottomNavigationBar(
         selectedItem = BottomNavigationDestination.Home,
-        onDestinationChanged = {},
+        onDestinationChange = {},
     )
 }

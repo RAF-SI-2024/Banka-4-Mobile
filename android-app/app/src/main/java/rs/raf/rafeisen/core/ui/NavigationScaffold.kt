@@ -74,7 +74,7 @@ fun NavigationScaffold(
         bottomBar = {
             BottomNavigationBar(
                 selectedItem = selectedBottomBarDestination,
-                onDestinationChanged = onBottomBarDestinationClick,
+                onDestinationChange = onBottomBarDestinationClick,
             )
         },
         content = content,
