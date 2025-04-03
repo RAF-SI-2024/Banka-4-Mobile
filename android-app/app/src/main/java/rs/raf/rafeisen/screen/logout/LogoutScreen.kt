@@ -5,6 +5,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 
 @Composable
 fun LogoutScreen(
@@ -12,12 +14,15 @@ fun LogoutScreen(
     onClose: () -> Unit,
     navigateToLogin: () -> Unit,
 ) {
+    val currentOnClose by rememberUpdatedState(onClose)
+    val currentNavigateToLogin by rememberUpdatedState(navigateToLogin)
+
     LaunchedEffect(viewModel, viewModel.effects) {
         viewModel.effects.collect {
             when (it) {
                 LogoutContract.SideEffect.LogoutSuccessful -> {
-                    onClose()
-                    navigateToLogin()
+                    currentOnClose()
+                    currentNavigateToLogin()
                 }
             }
         }
@@ -25,12 +30,14 @@ fun LogoutScreen(
 
     LogoutScreen(
         onClose = onClose,
-        onLogoutRequested = { viewModel.setEvent(LogoutContract.UiEvent.LogoutConfirmed) },
+        onLogoutRequest = { viewModel.setEvent(LogoutContract.UiEvent.LogoutConfirmed) },
     )
 }
 
 @Composable
-private fun LogoutScreen(onLogoutRequested: () -> Unit, onClose: () -> Unit) {
+private fun LogoutScreen(
+    onLogoutRequest: () -> Unit,
+    onClose: () -> Unit) {
     AlertDialog(
         onDismissRequest = onClose,
         title = @Composable {
@@ -45,7 +52,7 @@ private fun LogoutScreen(onLogoutRequested: () -> Unit, onClose: () -> Unit) {
             }
         },
         confirmButton = @Composable {
-            TextButton(onClick = onLogoutRequested) {
+            TextButton(onClick = onLogoutRequest) {
                 Text(text = "Sign out")
             }
         },
