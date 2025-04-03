@@ -137,9 +137,9 @@ private fun TotpScreen(
 
 @Composable
 private fun CodeCard(
-    modifier: Modifier = Modifier,
     totp: TotpUiModel,
     progress: Float,
+    modifier: Modifier = Modifier,
 ) {
     val clipboardManager = LocalClipboardManager.current
 
