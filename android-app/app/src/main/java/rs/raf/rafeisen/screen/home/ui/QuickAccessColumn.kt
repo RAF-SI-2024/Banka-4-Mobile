@@ -53,10 +53,7 @@ fun QuickAccessColumn(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun QuickAccessItem(
-    quickAccessUi: QuickAccessUi,
-    modifier: Modifier = Modifier
-) {
+fun QuickAccessItem(quickAccessUi: QuickAccessUi, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)

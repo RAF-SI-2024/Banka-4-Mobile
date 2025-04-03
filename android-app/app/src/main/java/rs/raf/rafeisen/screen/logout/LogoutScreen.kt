@@ -35,9 +35,7 @@ fun LogoutScreen(
 }
 
 @Composable
-private fun LogoutScreen(
-    onLogoutRequest: () -> Unit,
-    onClose: () -> Unit) {
+private fun LogoutScreen(onLogoutRequest: () -> Unit, onClose: () -> Unit) {
     AlertDialog(
         onDismissRequest = onClose,
         title = @Composable {

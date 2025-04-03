@@ -41,10 +41,7 @@ import rs.raf.rafeisen.ui.theme.PurpleStart
 private const val NUMBER_OF_DIGITS_SHOWN = 4
 
 @Composable
-fun CardSection(
-    modifier: Modifier = Modifier,
-    cards: List<CardUIModel>
-) {
+fun CardSection(modifier: Modifier = Modifier, cards: List<CardUIModel>) {
     LazyRow(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -57,10 +54,7 @@ fun CardSection(
 }
 
 @Composable
-fun CardItem(
-    card: CardUIModel,
-    modifier: Modifier = Modifier,
-) {
+fun CardItem(card: CardUIModel, modifier: Modifier = Modifier) {
     val gradient = getCardGradient(card.cardName)
     val imageRes = getCardImageResource(card.cardName)
 
