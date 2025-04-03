@@ -109,8 +109,8 @@ private fun LoginScreen(state: LoginContract.UiState, eventPublisher: (LoginCont
 @Composable
 private fun LoginScreenBottomBar(
     disabled: Boolean,
-    modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Button(
         enabled = !disabled,
