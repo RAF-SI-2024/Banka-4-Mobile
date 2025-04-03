@@ -58,7 +58,7 @@ fun CardItem(card: CardUIModel, modifier: Modifier = Modifier) {
     val gradient = getCardGradient(card.cardName)
     val imageRes = getCardImageResource(card.cardName)
 
-    Box {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier
                 .clip(MaterialTheme.shapes.large)
