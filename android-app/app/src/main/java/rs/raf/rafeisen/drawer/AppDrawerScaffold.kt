@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun AppDrawerScaffold(
     drawerState: DrawerState,
-    modifier: Modifier = Modifier,
     onDrawerScreenDestinationClick: (DrawerScreenDestination) -> Unit,
+    modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
