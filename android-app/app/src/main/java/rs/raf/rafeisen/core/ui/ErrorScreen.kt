@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ErrorScreen(
-    modifier: Modifier = Modifier,
     message: String,
     onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
