@@ -18,7 +18,7 @@ class CardRepository @Inject constructor(
 
     suspend fun fetchCards() =
         withContext(dispatchers.io()) {
-            val cards = api.getAllCards(page = 0, size = 50) /* lol, don't care */
+            val cards = api.getAllCards(page = 0, size = 50)
 
             val entities = cards.content.map { it.toEntity() }
             database.cards().upsertAll(entities)

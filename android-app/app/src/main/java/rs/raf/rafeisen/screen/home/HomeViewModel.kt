@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.raf.rafeisen.domain.account.repository.AccountRepository
 import rs.raf.rafeisen.domain.card.repository.CardRepository
+import rs.raf.rafeisen.domain.user.UserDataUpdater
 import rs.raf.rafeisen.mappers.toUiModel
 import rs.raf.rafeisen.screen.home.HomeContract.UiEvent
 import rs.raf.rafeisen.screen.home.HomeContract.UiState
@@ -20,6 +21,7 @@ import timber.log.Timber
 class HomeViewModel @Inject constructor(
     private val cardRepository: CardRepository,
     private val accountRepository: AccountRepository,
+    private val userDataUpdater: UserDataUpdater
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
@@ -30,6 +32,7 @@ class HomeViewModel @Inject constructor(
     fun setEvent(event: UiEvent) = viewModelScope.launch { events.emit(event) }
 
     init {
+        observeUserData()
         observeEvents()
         fetchCards()
         fetchAccounts()
@@ -90,6 +93,12 @@ class HomeViewModel @Inject constructor(
             } finally {
                 setState { copy(isLoading = false) }
             }
+        }
+    }
+
+    private fun observeUserData(){
+        viewModelScope.launch {
+            userDataUpdater.updateUserAccount()
         }
     }
 }
