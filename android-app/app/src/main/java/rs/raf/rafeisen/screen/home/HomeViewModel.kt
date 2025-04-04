@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     fun setEvent(event: UiEvent) = viewModelScope.launch { events.emit(event) }
 
     init {
-        observeUserData()
+        updateUserData()
         observeEvents()
         fetchCards()
         fetchAccounts()
@@ -96,7 +96,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun observeUserData(){
+    private fun updateUserData(){
         viewModelScope.launch {
             userDataUpdater.updateUserAccount()
         }
