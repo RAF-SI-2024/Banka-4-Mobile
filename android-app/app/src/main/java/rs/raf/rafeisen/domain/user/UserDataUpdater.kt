@@ -14,14 +14,10 @@ class UserDataUpdater @Inject constructor(
     private val activeAccountStore: ActiveAccountStore,
 ) {
     suspend fun updateUserAccount() {
-
-
         val activeUserId = activeAccountStore.activeUserId()
-
 
         try {
             val me = clientApi.getMe()
-
 
             accountsStore.getAndUpdateAccount(activeUserId) {
                 copy(
@@ -33,11 +29,8 @@ class UserDataUpdater @Inject constructor(
                     address = me.address,
                 )
             }
-
-
         } catch (e: Exception) {
             Timber.e(e, " Failed to update user account.")
         }
     }
-
 }

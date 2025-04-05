@@ -21,6 +21,8 @@ import rs.raf.rafeisen.screen.login.LoginScreen
 import rs.raf.rafeisen.screen.login.LoginViewModel
 import rs.raf.rafeisen.screen.logout.LogoutScreen
 import rs.raf.rafeisen.screen.logout.LogoutViewModel
+import rs.raf.rafeisen.screen.profile.ProfileScreen
+import rs.raf.rafeisen.screen.profile.ProfileViewModel
 import rs.raf.rafeisen.totp.add.AddTotpScreen
 import rs.raf.rafeisen.totp.add.AddTotpViewModel
 import rs.raf.rafeisen.totp.home.TotpScreen
@@ -34,13 +36,14 @@ fun AppNavigation(startDestination: String) {
         when (it) {
             DrawerScreenDestination.Home -> navController.navigateToHome()
             is DrawerScreenDestination.SignOut -> navController.navigateToLogout()
+            is DrawerScreenDestination.Profile -> navController.navigateToProfile()
         }
     }
 
     val bottomBarDestinationHandler: (BottomNavigationDestination) -> Unit = {
         when (it) {
             BottomNavigationDestination.Home -> navController.navigateToHome()
-            BottomNavigationDestination.Profile -> {}
+            BottomNavigationDestination.Profile -> navController.navigateToProfile()
             BottomNavigationDestination.Totp -> navController.navigateToTotp()
         }
     }
@@ -86,6 +89,11 @@ fun AppNavigation(startDestination: String) {
                     uriPattern = "otpauth://totp/.*?secret={$SECRET}&issuer={$ISSUER}&.*"
                 },
             ),
+        )
+        profile(
+            route = "profile",
+            onDrawerScreenDestination = drawerDestinationHandler,
+            onBottomBarDestination = bottomBarDestinationHandler,
         )
     }
 }
@@ -155,5 +163,18 @@ private fun NavGraphBuilder.addTotp(
             navController.navigateToTotp()
         },
         onClose = { navController.popBackStack() },
+    )
+}
+
+private fun NavGraphBuilder.profile(
+    route: String,
+    onDrawerScreenDestination: (DrawerScreenDestination) -> Unit,
+    onBottomBarDestination: (BottomNavigationDestination) -> Unit,
+) = composable(route = route) {
+    val viewModel = hiltViewModel<ProfileViewModel>()
+    ProfileScreen(
+        viewModel = viewModel,
+        onDrawerScreenDestinationClick = onDrawerScreenDestination,
+        onBottomBarDestinationClick = onBottomBarDestination,
     )
 }

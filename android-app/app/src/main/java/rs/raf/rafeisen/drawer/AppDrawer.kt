@@ -1,8 +1,12 @@
 package rs.raf.rafeisen.drawer
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -15,10 +19,12 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import rs.raf.rafeisen.screen.profile.ui.InitialsAvatar
 
 @Composable
 fun AppDrawer(
@@ -60,14 +66,33 @@ private fun AppDrawer(
         modifier = modifier,
         drawerContent = {
             ModalDrawerSheet {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onDrawerDestinationClick(DrawerScreenDestination.Profile) }
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    val initials = state.activeAccount.fullName()
+                        .split(" ")
+                        .take(2)
+                        .joinToString("") { it.first().uppercase() }
+
+                    InitialsAvatar(
+                        initials = initials,
+                        modifier = Modifier.size(64.dp),
+                    )
+
                     Text(
                         text = state.activeAccount.fullName(),
                         style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                     Text(
                         text = state.activeAccount.email,
                         style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 
@@ -102,11 +127,13 @@ fun NavigationDrawerItems(
 
 sealed class DrawerScreenDestination {
     data object Home : DrawerScreenDestination()
+    data object Profile : DrawerScreenDestination()
     data class SignOut(val userId: String) : DrawerScreenDestination()
 }
 
 private fun DrawerScreenDestination.label(): String =
     when (this) {
         DrawerScreenDestination.Home -> "Home"
+        DrawerScreenDestination.Profile -> "My Profile"
         is DrawerScreenDestination.SignOut -> "Sign out"
     }

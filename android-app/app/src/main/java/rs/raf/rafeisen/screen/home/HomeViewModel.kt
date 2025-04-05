@@ -21,7 +21,7 @@ import timber.log.Timber
 class HomeViewModel @Inject constructor(
     private val cardRepository: CardRepository,
     private val accountRepository: AccountRepository,
-    private val userDataUpdater: UserDataUpdater
+    private val userDataUpdater: UserDataUpdater,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
@@ -96,7 +96,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateUserData(){
+    private fun updateUserData() {
         viewModelScope.launch {
             userDataUpdater.updateUserAccount()
         }
