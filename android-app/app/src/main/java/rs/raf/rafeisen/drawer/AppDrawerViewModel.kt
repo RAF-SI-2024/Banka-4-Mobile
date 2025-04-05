@@ -35,6 +35,7 @@ class AppDrawerViewModel @Inject constructor(private val activeAccountStore: Act
     private fun buildDrawerMenuItems(userId: String) =
         listOf(
             DrawerScreenDestination.Home,
+            DrawerScreenDestination.Profile,
             DrawerScreenDestination.SignOut(userId = userId),
         )
 }
