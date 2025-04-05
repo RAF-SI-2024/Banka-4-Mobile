@@ -36,6 +36,7 @@ fun AppNavigation(startDestination: String) {
         when (it) {
             DrawerScreenDestination.Home -> navController.navigateToHome()
             is DrawerScreenDestination.SignOut -> navController.navigateToLogout()
+            is DrawerScreenDestination.Profile -> navController.navigateToProfile()
         }
     }
 
