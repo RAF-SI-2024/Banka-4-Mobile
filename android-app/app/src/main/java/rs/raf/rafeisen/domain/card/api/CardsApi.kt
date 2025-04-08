@@ -13,6 +13,5 @@ interface CardsApi {
         @Query("size") size: Int = 20,
     ): Pageable<CardResponse>
 
-    @GET("/cards/client/search")
-    suspend fun getAllCards(@Query("page") page: Int = 0, @Query("size") size: Int = 20): Pageable<CardResponse>
+
 }
