@@ -7,6 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import rs.raf.rafeisen.domain.account.repository.AccountRepository
@@ -21,7 +22,7 @@ import timber.log.Timber
 class HomeViewModel @Inject constructor(
     private val cardRepository: CardRepository,
     private val accountRepository: AccountRepository,
-    private val userDataUpdater: UserDataUpdater
+    private val userDataUpdater: UserDataUpdater,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
@@ -73,7 +74,10 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             setState { copy(isLoading = true, error = null) }
             try {
-                cardRepository.fetchCards()
+                val accounts = accountRepository.observeAccounts().firstOrNull()
+                accounts?.forEach { account ->
+                    cardRepository.fetchCards(account.accountNumber)
+                } ?: Timber.w("No accounts available to fetch cards for")
             } catch (e: Exception) {
                 Timber.w(e)
                 setState { copy(error = e) }
@@ -96,7 +100,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateUserData(){
+    private fun updateUserData() {
         viewModelScope.launch {
             userDataUpdater.updateUserAccount()
         }

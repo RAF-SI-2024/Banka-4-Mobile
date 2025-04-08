@@ -43,6 +43,8 @@ class AuthService @Inject constructor(
                     phone = clientMeResponse.phone,
                     gender = clientMeResponse.gender,
                     address = clientMeResponse.address,
+                    dateOfBirth = clientMeResponse.dateOfBirth.toString(),
+                    has2FA = clientMeResponse.has2FA,
                 ),
             )
             activeAccountStore.setActiveUserId(clientMeResponse.id)

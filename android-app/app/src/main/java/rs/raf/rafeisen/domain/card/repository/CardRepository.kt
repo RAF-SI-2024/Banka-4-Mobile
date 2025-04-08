@@ -16,10 +16,9 @@ class CardRepository @Inject constructor(
     private val dispatchers: CoroutineDispatcherProvider,
 ) {
 
-    suspend fun fetchCards() =
+    suspend fun fetchCards(accountNumber: String) =
         withContext(dispatchers.io()) {
-            val cards = api.getAllCards(page = 0, size = 50)
-
+            val cards = api.getCardsByAccountNumber(accountNumber = accountNumber, page = 0, size = 50)
             val entities = cards.content.map { it.toEntity() }
             database.cards().upsertAll(entities)
         }
