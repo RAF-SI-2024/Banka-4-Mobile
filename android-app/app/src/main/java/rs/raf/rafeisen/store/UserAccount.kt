@@ -12,7 +12,8 @@ data class UserAccount(
     val email: String,
     val phone: String,
     val address: String,
-    // TODO: add privileges and dateOfBirth
+    val dateOfBirth: String,
+    val has2FA: Boolean? = false,
 ) {
     fun fullName() = "$firstName $lastName"
     companion object {
@@ -24,6 +25,8 @@ data class UserAccount(
             email = "",
             phone = "",
             address = "",
+            dateOfBirth = "",
+            has2FA = false,
         )
     }
 }

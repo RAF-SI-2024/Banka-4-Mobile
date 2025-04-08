@@ -16,5 +16,5 @@ data class ClientResponse(
     @Serializable(with = LocalDateSerializer::class)
     val dateOfBirth: LocalDate,
     val address: String,
-    val has2FA: Boolean?,
+    val has2FA: Boolean? = null,
 )

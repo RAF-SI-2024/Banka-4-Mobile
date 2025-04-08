@@ -27,6 +27,8 @@ class UserDataUpdater @Inject constructor(
                     email = me.email,
                     phone = me.phone,
                     address = me.address,
+                    dateOfBirth = me.dateOfBirth.toString(),
+                    has2FA = me.has2FA,
                 )
             }
         } catch (e: Exception) {

@@ -1,15 +1,16 @@
 package rs.raf.rafeisen.mappers
 
-import rs.raf.rafeisen.domain.client.api.response.ClientResponse
+import java.time.LocalDate
 import rs.raf.rafeisen.screen.profile.model.ProfileUIModel
+import rs.raf.rafeisen.store.UserAccount
 
-fun ClientResponse.toUiModel() =
+fun UserAccount.toProfileUIModel(): ProfileUIModel =
     ProfileUIModel(
         fullName = "$firstName $lastName",
         email = email,
         phone = phone,
         address = address,
-        dateOfBirth = dateOfBirth,
+        dateOfBirth = LocalDate.now(),
         gender = gender,
-        has2FA = has2FA == true,
+        has2FA = true,
     )
